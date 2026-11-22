@@ -24,6 +24,8 @@ Success targets: in a pilot, at least four of five participants repair the suppl
 
 Import UTF-8 CSV → choose inventory schema → map columns → fix one validation type → preview changes → export clean CSV. The original is immutable. No accounts or server.
 
+**Implementation Status**: Alpha workflow implemented with end-to-end tests covering the main sample journey.
+
 ### V1 requirements
 
 - CSV with comma, semicolon or tab delimiter; explicit user confirmation of detected delimiter and header row. Support quoted newlines and UTF-8 BOM. Reject undecodable content with a useful message; other encodings wait for a real request.
