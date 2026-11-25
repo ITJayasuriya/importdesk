@@ -15,3 +15,5 @@ Read SETUP-RESULT.md and OPERATIONS.md for verified setup and release prerequisi
 ## 25 November 2026 — day 1 in progress
 
 Branch: codex/inventory-alpha. Discovery assumptions and synthetic acceptance fixture recorded (issues #4–6). No human validation claimed. PR #12 is an external proposal without application implementation; do not merge it as alpha completion. Next: bounded parser, worker protocol and source preview. Remaining v1: all mapping/validation/repair/export/recipe/persistence and release acceptance gates. No deployment yet. Initial baseline: 8cbc32d.
+
+Bounded parser implemented: fatal UTF-8 decoding, explicit comma/semicolon/tab and header options, uncoerced strings, stable logical row IDs with physical line provenance, batch yields and cancellation. Eleven domain tests pass, including 100,000-row acceptance, overflow rejection, quoted-newline/BOM/empty-versus-missing preservation. This proves the parser boundary, not the full performance budget or alpha journey. Next: worker ownership and paged browser preview.
