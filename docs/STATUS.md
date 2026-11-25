@@ -11,3 +11,7 @@ Next: M0 discovery and first vertical slice from IMPLEMENTATION.md. No product u
 Deferred tool integrations: unused Storybook (FormPath) and PWA tooling (RepairRelay) were removed after moderate transitive advisories. Select secure compatible versions when those milestones start.
 
 Read SETUP-RESULT.md and OPERATIONS.md for verified setup and release prerequisites. All main-branch CI checks passed on Linux including all three browser engines. Do not create scheduled tasks: the owner will create them after readiness review.
+
+## 25 November 2026 — day 1 in progress
+
+Branch: codex/inventory-alpha. Discovery assumptions and synthetic acceptance fixture recorded (issues #4–6). No human validation claimed. PR #12 is an external proposal without application implementation; do not merge it as alpha completion. Next: bounded parser, worker protocol and source preview. Remaining v1: all mapping/validation/repair/export/recipe/persistence and release acceptance gates. No deployment yet. Initial baseline: 8cbc32d.

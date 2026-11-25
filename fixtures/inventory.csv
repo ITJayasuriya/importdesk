@@ -1,0 +1,7 @@
+Asset ID,Label,Category,Location,Inspection Date,Quantity
+000123, Folding chair ,furniture,Hall A,2026-11-01,12
+000124,"Projector,
+portable",electronics,Store,01/02/2026,1
+000125,,equipment,Store,2026-11-03,2
+000123,Spare chair,furniture,Hall B,2026-11-01,1
+000126,=HYPERLINK(""https://invalid.example""),equipment,Store,2026-11-04,1
