@@ -1,0 +1,107 @@
+.workbench {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.intro {
+  max-width: 70ch;
+  margin-block: 1.5rem 2rem;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-block: 1rem;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block: 1rem;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+.primary {
+  color: var(--surface);
+  background: var(--mapping);
+  border-color: var(--mapping);
+}
+.filename {
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, monospace;
+}
+.error {
+  color: var(--exception);
+  border-inline-start: 4px solid var(--exception);
+  padding: 1rem;
+  background: var(--paper);
+}
+.stamp {
+  color: var(--accepted);
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+}
+.tableScroll {
+  overflow: auto;
+  max-height: 34rem;
+  border: 1px solid var(--border);
+  margin-block: 1.5rem;
+}
+.tableScroll table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: start;
+}
+.tableScroll caption {
+  text-align: start;
+  padding: 0.75rem;
+  color: var(--muted);
+}
+.tableScroll th,
+.tableScroll td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem;
+  vertical-align: top;
+  text-align: start;
+}
+.tableScroll thead {
+  background: var(--paper);
+}
+.tableScroll td {
+  font-family: ui-monospace, monospace;
+  white-space: pre-wrap;
+  min-width: 8rem;
+  max-width: 24rem;
+  overflow-wrap: anywhere;
+}
+.tableScroll small {
+  color: var(--muted);
+  font-weight: 400;
+}
+@media (max-width: 600px) {
+  .workbench {
+    padding: 1rem;
+  }
+  .panel {
+    padding: 1rem;
+  }
+}

@@ -71,7 +71,12 @@ describe("bounded CSV source", () => {
   });
   it("accepts 100,000 rows and cooperatively cancels between batches", async () => {
     const input = "id\n" + "0001\n".repeat(LIMITS.rows);
-    expect((await parse(input)).rows).toHaveLength(LIMITS.rows);
+    const source = await parse(input);
+    expect(source.rows).toHaveLength(LIMITS.rows);
+    expect(source.rows.at(-1)).toMatchObject({
+      rowId: "row:100000",
+      sourceLine: 100001,
+    });
     let cancel = false;
     await expect(
       parseCsv(new Blob([input]), comma, {

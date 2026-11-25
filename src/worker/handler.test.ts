@@ -14,6 +14,7 @@ it("returns only current page and refuses a different session or revision", asyn
   await handle(request("id\n" + "0001\n".repeat(101)));
   expect(replies.at(-1)).toMatchObject({ type: "imported", total: 101 });
   expect(replies.at(-1)).toHaveProperty("rows.length", 50);
+  expect(replies.at(-1)).not.toHaveProperty("file");
   await handle({ ...identity, type: "GET_ROWS", page: 2 });
   expect(replies.at(-1)).toMatchObject({
     type: "page",
@@ -56,4 +57,13 @@ it("UI rejects obsolete request, session and revision replies", () => {
   ]) {
     expect(matchesReply({ ...identity, ...changed }, identity)).toBe(false);
   }
+});
+
+it("obsolete cancellation cannot abort a newer import", async () => {
+  const replies: Reply[] = [];
+  const handle = createHandler((reply) => replies.push(reply));
+  const pending = handle(request("id\n" + "1\n".repeat(1000)));
+  await handle({ ...identity, requestId: "old", type: "CANCEL" });
+  await pending;
+  expect(replies.at(-1)?.type).toBe("imported");
 });

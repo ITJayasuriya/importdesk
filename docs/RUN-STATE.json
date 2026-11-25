@@ -1,26 +1,31 @@
 {
   "schema_version": 1,
   "local_date": "2026-11-25",
-  "state": "in_progress",
+  "state": "awaiting_ci",
   "planned_daily_goal": "Inventory acceptance contract and bounded CSV parsing foundation with regression tests",
   "commit_target": 4,
   "completed_unit_ids": [
     "M0-synthetic-contract",
     "M1-bounded-parser",
-    "M1-worker-pages"
+    "M1-worker-pages",
+    "M1-import-source-preview"
   ],
   "actual_commit_shas": [
     "d21c91c95601ab62c405eb80bd25955952bc346b",
-    "2ac1edec8f258268ce51667e81afa0936a00b2f1"
+    "2ac1edec8f258268ce51667e81afa0936a00b2f1",
+    "e47ff78d798dda74c598835fb8ff2cd9dd2f0b9d"
   ],
   "branch": "codex/inventory-alpha",
   "open_pr": null,
   "last_tested_sha": null,
   "actual_test_results": {
-    "unit": "15 domain/worker tests passed"
+    "unit": "16/16 passed including obsolete cancellation isolation",
+    "browsers": "6/6 local Chromium/WebKit passed; final stale-cancel guard covered by unit test, CI to rerun all browsers",
+    "check": "passed",
+    "build": "passed; main bundle 71.52 KiB gzip; deferred worker 115.69 KiB raw"
   },
-  "next_action": "Build explicit import confirmation and accessible paginated source preview, verify browsers",
+  "next_action": "Run final checks, commit, push PR and inspect required Linux CI before merge/deploy",
   "dirty_files": [],
   "blocker": null,
-  "updated_at": "2026-11-25T11:29:09.275097+00:00"
+  "updated_at": "2026-11-25T11:34:21.479466+00:00"
 }
