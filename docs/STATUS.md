@@ -1,25 +1,28 @@
 # Status
 
-Stage: verified development foundation, not an implemented product.
+Stage: private CSV import and original-source preview implemented; mapping/repair/export alpha remains unfinished.
 
-Completed: repository skeleton, pinned dependencies, application setup marker, TypeScript/lint/format configuration, production build, Chromium smoke and axe check, three-browser CI configuration, contribution/security documents and implementation plans.
+## Current implementation — 25 November 2026 (day 1)
 
-Local Firefox startup currently fails before page load with “Could not find profile folder.” Chromium and WebKit are the local readiness checks via `npm run test:e2e:local`; full `npm run test:e2e` includes Firefox and is required in Linux CI. Do not claim local Firefox passed.
+- Synthetic five-row inventory acceptance fixture and local-worker ADR; human workflow hypotheses and interview guide recorded without fabricated discovery evidence. Issues #4–7 remain open.
+- Bounded UTF-8 parsing with explicit delimiter/header confirmation, preserved strings, quoted newlines/BOM, physical source lines, stable logical row IDs, cancellation and strict file/row/column/cell rejection limits.
+- Runtime-validated worker requests; session/request/revision guards, obsolete cancellation/reply rejection, atomic confirmed-source replacement and 50-row pages. No full dataset in React, upload transport or persistence writes.
+- Native labeled file/sample controls, paginated semantic table, responsive scroll-contained preview, error focus/retry, offline sample and build revision marker.
 
-Next: M0 discovery and first vertical slice from IMPLEMENTATION.md. No product unit tests exist yet; add meaningful domain tests with product logic.
+## Verification and review
 
-Deferred tool integrations: unused Storybook (FormPath) and PWA tooling (RepairRelay) were removed after moderate transitive advisories. Select secure compatible versions when those milestones start.
+PR: https://github.com/ITJayasuriya/importdesk/pull/13. Implementation revision: 93b732659b2d0b4ddc19aca6028b2b3833bf0eab. Subsequent documentation-only commit does not change product behavior.
 
-Read SETUP-RESULT.md and OPERATIONS.md for verified setup and release prerequisites. All main-branch CI checks passed on Linux including all three browser engines. Do not create scheduled tasks: the owner will create them after readiness review.
+Local: `npm run check`, `npm test` (16 domain/worker cases), `npm run build` passed. `npm run test:e2e:local` passed all 6 Chromium/WebKit cases; the final obsolete-cancel guard is unit-covered and Linux CI reruns the full tree. Actual desktop/360px screenshots inspected. Keyboard activation, error focus, offline sample, no external requests in the observed sample journey, no localStorage/IndexedDB writes and axe checks passed. See testing.md and review-2026-11-25.md for scope/limitations.
 
-## 25 November 2026 — day 1 in progress
+Self-review resolved request Blob leakage into replies, client-side runtime schema bundling, repeated table-width calculation, stale cancellation, error-focus timing, mobile fieldset overflow and lazy dependency reload. No independent reviewer claimed. Main bundle: 71.52 KiB gzip before final guard (lab build size, not field performance). 100,000-row parser test is not 100k×20 browser performance evidence.
 
-Branch: codex/inventory-alpha. Discovery assumptions and synthetic acceptance fixture recorded (issues #4–6). No human validation claimed. PR #12 is an external proposal without application implementation; do not merge it as alpha completion. Next: bounded parser, worker protocol and source preview. Remaining v1: all mapping/validation/repair/export/recipe/persistence and release acceptance gates. No deployment yet. Initial baseline: 8cbc32d.
+Linux required CI pending. Existing live setup marker verified before deployment. No new deployment claimed yet. Neither `codex` nor `codex-automation` label exists in this repository; PR uses existing enhancement label. External PR #12 was inspected read-only and left untouched because it contains no application implementation.
 
-Bounded parser implemented: fatal UTF-8 decoding, explicit comma/semicolon/tab and header options, uncoerced strings, stable logical row IDs with physical line provenance, batch yields and cancellation. Eleven domain tests pass, including 100,000-row acceptance, overflow rejection, quoted-newline/BOM/empty-versus-missing preservation. This proves the parser boundary, not the full performance budget or alpha journey. Next: worker ownership and paged browser preview.
+## Next action and remaining scope
 
-Worker integration: runtime-validated IMPORT/GET_ROWS/CANCEL messages, session/request/revision identity, 50-row page replies, no partial completion after cancel, and preservation of confirmed data after failed replacement. Added four regression tests (15 total). Next: import confirmation and preview UI. Worker and UI contain no network or persistence APIs.
+Pass required CI, merge PR #13 normally, build checked main and deploy once to https://isuru-importdesk.pages.dev; verify live sample and revision. Then implement explicit inventory destination-schema mapping, required-field validation and previewed repair/export to complete M1 within days 1–7.
 
-Day 1 UI: explicit delimiter/header confirmation, local file and synthetic sample selection, worker progress/cancel, 50-row source pages, source-line provenance, recoverable UTF-8 errors with focus, responsive scroll-contained table and revision marker. No repairs or export claims. Local Chromium/WebKit: all 6 browser cases passed; desktop/360px screenshots inspected. Offline sample and observed no-external-request/no-storage checks passed. Unit: 15 passed; check/build passed before final documentation/revision changes (rechecking). Self-review findings resolved in docs/review-2026-11-25.md. Next delivery unit: explicit inventory destination mapping and required-field validation, then previewed repair/export alpha. Entire recipe/duplicate/date/persistence/release scope remains.
+V1 still requires configurable constrained schemas, all validation rules and issue navigation, deterministic trim/enum/date/missing-value/manual transforms, duplicate review, undo/redo, versioned recipe import/replay, opt-in IndexedDB sessions and quota/corruption recovery, validated clean/rejected exports and formula-safe choices. Finish full browser, cancellation, round-trip/data-count tests; measured 100k×20 performance; manual accessibility/cross-browser reviews; clean-checkout contributor verification; human feedback disclosure and release gates by 5 January 2027.
 
-Final day-1 checks passed; 16 unit/worker cases, 6 Chromium/WebKit browser cases, production build and type/lint/format checks. Last additional guard ignores obsolete cancellation IDs (unit-covered). Linux CI and deployment pending. Main bundle after worker-boundary simplification: 71.52 KiB gzip (lab build size only). Final tested tree will be the fourth implementation commit; checkpoint reconciles its SHA after commit.
+Local Firefox has the documented pre-page startup failure; Linux CI must run all three engines. VoiceOver/NVDA and full browser performance budgets remain unverified. Missing pilot evidence is not a blocker to independent implementation and is not a passed discovery gate. See SETUP-RESULT.md and OPERATIONS.md for existing deployment prerequisites.
