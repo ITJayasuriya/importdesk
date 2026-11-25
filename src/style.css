@@ -1,27 +1,121 @@
 :root {
   font-family: system-ui, sans-serif;
-  color: #172033;
-  background: #f8fafc;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 100%;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  --paper: #f8fafc;
+  --surface: #fff;
+  --ink: #172033;
+  --muted: #526079;
+  --mapping: #1d4ed8;
+  --exception: #92400e;
+  --accepted: #166534;
+  --border: #dce1e9;
+  --input: #f1f4f8;
+}
+* {
+  box-sizing: border-box;
 }
 body {
   margin: 0;
-}
-main {
-  max-width: 48rem;
-  margin: 12vh auto;
-  padding: 1.5rem;
-}
-h1 {
-  font-size: clamp(2rem, 6vw, 4rem);
-  line-height: 1.1;
-}
-p {
+  font-size: 0.875rem;
   line-height: 1.6;
 }
-a {
-  color: #1d4ed8;
+h1 {
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0;
 }
-a:focus-visible {
-  outline: 3px solid currentColor;
+h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+h1,
+h2 {
+  line-height: 1.25;
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+a {
+  color: var(--mapping);
+  text-underline-offset: 0.2em;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+select,
+input[type="file"] {
+  min-height: 2.75rem;
+  max-width: 100%;
+}
+button,
+select {
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--input);
+  color: var(--ink);
+}
+button {
+  cursor: pointer;
+  font-weight: 600;
+}
+button:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+legend {
+  max-width: 100%;
+}
+input[type="file"] {
+  width: 100%;
+}
+label {
+  display: block;
+}
+label select,
+label input[type="file"] {
+  display: block;
+  margin-block-start: 0.5rem;
+}
+input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  accent-color: var(--mapping);
+}
+fieldset {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+:focus-visible {
+  outline: 3px solid var(--mapping);
   outline-offset: 4px;
+}
+footer {
+  color: var(--muted);
+  margin-block: 2rem;
+}
+@media (max-width: 600px) {
+  body,
+  input,
+  select {
+    font-size: 1rem;
+  }
 }
