@@ -45,10 +45,10 @@ export function InventoryMapping({
           <legend>Destination ← source column</legend>
           <div className={styles.mappingGrid}>
             {INVENTORY_FIELDS.map(({ id, label, requirement }) => (
-              <label key={id}>
-                <span id={`${id}-label`}>{label}</span>
+              <div key={id}>
+                <label htmlFor={`mapping-${id}`}>{label}</label>
                 <select
-                  aria-labelledby={`${id}-label`}
+                  id={`mapping-${id}`}
                   value={mapping[id] ?? ""}
                   aria-describedby={`${id}-requirement`}
                   onChange={(event) => {
@@ -71,7 +71,7 @@ export function InventoryMapping({
                   ))}
                 </select>
                 <small id={`${id}-requirement`}>{requirement}</small>
-              </label>
+              </div>
             ))}
           </div>
           {problems.length > 0 && (

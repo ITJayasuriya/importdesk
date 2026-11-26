@@ -11,15 +11,21 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   await expect(page.getByRole("status")).toContainText("5 source rows ready");
   const check = page.getByRole("button", { name: "Check required fields" });
   await expect(check).toBeDisabled();
-  await expect(page.getByLabel("Asset ID", { exact: true })).toHaveValue("0");
-  await page.getByLabel("Label", { exact: true }).selectOption("0");
+  await expect(
+    page.getByRole("combobox", { name: "Asset ID", exact: true }),
+  ).toHaveValue("0");
+  await page
+    .getByRole("combobox", { name: "Label", exact: true })
+    .selectOption("0");
   await expect(
     page.getByText("Label: source column is mapped more than once."),
   ).toBeVisible();
   await expect(
     page.getByRole("checkbox", { name: "I confirm all inventory" }),
   ).toBeDisabled();
-  await page.getByLabel("Label", { exact: true }).selectOption("1");
+  await page
+    .getByRole("combobox", { name: "Label", exact: true })
+    .selectOption("1");
   await page.getByRole("checkbox", { name: "I confirm all inventory" }).check();
   await page.context().setOffline(true);
   await check.focus();
@@ -40,12 +46,7 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   await expect(
     page.getByRole("cell", { name: "01/02/2026", exact: true }),
   ).toBeVisible();
-  // Keep the offline product assertions separate from axe’s browser-page orchestration.
-  await page.context().setOffline(false);
-  await expect(page.locator("iframe")).toHaveCount(0);
-  expect(
-    (await new AxeBuilder({ page }).setLegacyMode().analyze()).violations,
-  ).toEqual([]);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
     path: "test-results/mapping-desktop.png",
     fullPage: true,
@@ -56,15 +57,14 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await expect(page.locator("iframe")).toHaveCount(0);
-  expect(
-    (await new AxeBuilder({ page }).setLegacyMode().analyze()).violations,
-  ).toEqual([]);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
     path: "test-results/mapping-mobile.png",
     fullPage: true,
   });
-  await page.getByLabel("Label", { exact: true }).selectOption("2");
+  await page
+    .getByRole("combobox", { name: "Label", exact: true })
+    .selectOption("2");
   await expect(
     page.getByRole("heading", { name: "Required-field results" }),
   ).toHaveCount(0);
@@ -85,11 +85,15 @@ test("duplicate headers require a deliberate positional choice; extra columns ar
   await page.getByRole("checkbox", { name: "I confirm the delimiter" }).check();
   await page.getByRole("button", { name: "Import source preview" }).click();
   await expect(page.getByRole("status")).toContainText("1 source rows ready");
-  await expect(page.getByLabel("Asset ID", { exact: true })).toHaveValue("");
+  await expect(
+    page.getByRole("combobox", { name: "Asset ID", exact: true }),
+  ).toHaveValue("");
   await expect(
     page.getByText("Asset ID: choose a source column."),
   ).toBeVisible();
-  await page.getByLabel("Asset ID", { exact: true }).selectOption("1");
+  await page
+    .getByRole("combobox", { name: "Asset ID", exact: true })
+    .selectOption("1");
   await expect(page.getByText(/Unmapped source columns:/)).toContainText(
     "extra (#8)",
   );

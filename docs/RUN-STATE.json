@@ -14,11 +14,12 @@
     "5352e40278746a004fed7de91d1c9c9cdd5cc157",
     "9254e7995c26a21503d88b361454caa4b8b37a01",
     "981e14c7bc34be7a14e0471971799b18028e131d",
-    "8f9c9c71f2015ccb2e94bfb4190b6bc66fd13b5e"
+    "8f9c9c71f2015ccb2e94bfb4190b6bc66fd13b5e",
+    "9d3ff93b45e6200a5340b24c12856ea300298a0e"
   ],
   "branch": "feat/inventory-mapping",
   "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/14",
-  "last_tested_sha": "8f9c9c71f2015ccb2e94bfb4190b6bc66fd13b5e",
+  "last_tested_sha": "9d3ff93b45e6200a5340b24c12856ea300298a0e",
   "actual_test_results": {
     "unit": "21/21 passed",
     "check": "passed",
@@ -28,8 +29,8 @@
     "local_mapping_after_ci_fix": "4/4 Chromium/WebKit passed; check passed",
     "ci_initial": "14/15 browser cases; Firefox crashed in axe after offline assertions"
   },
-  "next_action": "Use supported in-page axe runner plus no-iframe assertion, verify local affected tests and required Linux CI; no bypass",
+  "next_action": "Native label/for plus combobox role/name locators; default axe/offline assertions restored. Rerun local mapping and full required CI",
   "dirty_files": ["docs/RUN-STATE.json"],
-  "blocker": "Linux Firefox crashes inside axe runPartial in mapping results; online restoration did not resolve",
-  "updated_at": "2026-11-26T16:47:23.843016+00:00"
+  "blocker": "Required CI must verify mitigation for known Firefox build1572 ARIA reflection crash (Playwright #44135)",
+  "updated_at": "2026-11-26T16:51:06.314757+00:00"
 }

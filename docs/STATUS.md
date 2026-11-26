@@ -40,3 +40,5 @@ Day-2 implementation revision: 9254e79 (with worker/domain commit 5352e40). Self
 PR #14 initial Linux CI failed 1/15: Firefox page crashed during axe evaluation after offline mapping assertions passed. Required check remains enforced. Separating offline behavior assertions from online axe orchestration, then rerunning local affected journeys and full Linux CI. One necessary test fix exceeds the target of 3 commits; no padding commit.
 
 The offline/online separation alone did not fix Firefox (CI 45861448757). Trying the supported in-page axe runner with an asserted iframe-free page, preserving all accessibility rules and engines. No merge or deployment yet.
+
+Upstream Firefox build-1572 ARIA reflection crash identified (Playwright #44135). Replaced new selects’ ARIA label references with native label/for and combobox role/name test locators; removed unsuccessful online/in-page-axe workarounds. Default axe rules, offline assertions and all three engines retained. Required CI to rerun.
