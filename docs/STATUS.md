@@ -1,6 +1,6 @@
 # Status
 
-Stage: private CSV import and original-source preview implemented; mapping/repair/export alpha remains unfinished.
+Stage: private CSV import, source preview, explicit inventory mapping and required-field checks implemented; repair/export alpha remains unfinished.
 
 ## Current implementation — 25 November 2026 (day 1)
 
@@ -34,3 +34,5 @@ Daily target: 4; actual coherent implementation/documentation commits: 5 (d21c91
 Daily target selected once: 3. Pure inventory mapping/presence validation and worker request boundary implemented; 21 unit tests pass, including required-value counts, bounded examples, stale validation cancellation/replacement and immutable source values. Type checking passes after UI reply handling integration; full check pending formatting of checkpoint. Next: finish mapping UI and browser journeys, then self-review and required CI. PR triage: #1–3 are unchanged major tooling upgrades, deferred compatibility review; #12 unchanged and lacks implementation. No necessary implementation PR awaits CI. Original day-1 operational records preserved.
 
 Mapping UI complete: positional column choices with explicit confirmation; missing/duplicate mappings block validation; edits clear old results; unmapped source columns disclosed. Offline sample reports 5 = 4 present + 1 rejected, without claiming those four are export-valid. All 10 local Chromium/WebKit cases and check pass. Desktop/360px screenshots inspected; no document overflow, axe violations or source changes observed. Review fixed noisy accessible select names and narrowed existing confirmation locators. Next: contributor mapping contract, self-review, checked-head PR CI and deployment.
+
+Day-2 implementation revision: 9254e79 (with worker/domain commit 5352e40). Self-review documented in review-2026-11-26.md; no unresolved structural blocker. Contributor mapping contract and README now explain the executable journey and limits. Next: push PR, required Linux CI on the current head, normal squash merge and one checked deployment. Remaining M1 critical path: previewed fill-missing repair and validated/formula-safe clean/rejected export. Broader v1 scope above remains mandatory. No pilot or full alpha completion claimed.

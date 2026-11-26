@@ -7,9 +7,13 @@
   "completed_unit_ids": [
     "inventory-required-contract",
     "worker-required-validation",
-    "inventory-mapping-ui"
+    "inventory-mapping-ui",
+    "mapping-contributor-contract-review"
   ],
-  "actual_commit_shas": ["5352e40278746a004fed7de91d1c9c9cdd5cc157"],
+  "actual_commit_shas": [
+    "5352e40278746a004fed7de91d1c9c9cdd5cc157",
+    "9254e7995c26a21503d88b361454caa4b8b37a01"
+  ],
   "branch": "feat/inventory-mapping",
   "open_pr": null,
   "last_tested_sha": "c65a84733c16d2563b685539d9531a09a70ad633",
@@ -17,14 +21,18 @@
     "unit": "21/21 passed",
     "check": "passed",
     "build": "passed; 72.86 KiB gzip main, 117.87 kB deferred worker (before final accessible-label change)",
-    "local_browsers": "10/10 Chromium/WebKit passed; screenshots desktop/360px inspected; axe and offline mapping passed"
+    "local_browsers": "10/10 Chromium/WebKit passed; screenshots desktop/360px inspected; axe and offline mapping passed",
+    "self_review": "No unresolved structural blocker; docs/review-2026-11-26.md"
   },
-  "next_action": "Commit mapping UI; document contract and Thermo self-review; push PR and run required Linux CI",
+  "next_action": "Run final checks, commit mapping contract/review, push existing branch and open one PR for #7; required Linux CI before merge",
   "dirty_files": [
-    "docs/RUN-STATE.json",
+    "README.md",
     "docs/STATUS.md",
-    "docs/OPERATIONS.md"
+    "docs/RUN-STATE.json",
+    "docs/testing.md",
+    "docs/inventory-mapping.md",
+    "docs/review-2026-11-26.md"
   ],
   "blocker": null,
-  "updated_at": "2026-11-26T16:37:43.109776+00:00"
+  "updated_at": "2026-11-26T16:38:33.402584+00:00"
 }
