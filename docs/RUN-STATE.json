@@ -6,23 +6,25 @@
   "commit_target": 3,
   "completed_unit_ids": [
     "inventory-required-contract",
-    "worker-required-validation"
+    "worker-required-validation",
+    "inventory-mapping-ui"
   ],
-  "actual_commit_shas": [],
+  "actual_commit_shas": ["5352e40278746a004fed7de91d1c9c9cdd5cc157"],
   "branch": "feat/inventory-mapping",
   "open_pr": null,
   "last_tested_sha": "c65a84733c16d2563b685539d9531a09a70ad633",
   "actual_test_results": {
     "unit": "21/21 passed",
-    "check": "pending checkpoint formatting",
-    "build": "not yet run"
+    "check": "passed",
+    "build": "passed; 72.86 KiB gzip main, 117.87 kB deferred worker (before final accessible-label change)",
+    "local_browsers": "10/10 Chromium/WebKit passed; screenshots desktop/360px inspected; axe and offline mapping passed"
   },
-  "next_action": "Commit tested mapping/presence contract and worker integration; verify mapping UI in Chromium/WebKit",
+  "next_action": "Commit mapping UI; document contract and Thermo self-review; push PR and run required Linux CI",
   "dirty_files": [
     "docs/RUN-STATE.json",
     "docs/STATUS.md",
     "docs/OPERATIONS.md"
   ],
   "blocker": null,
-  "updated_at": "2026-11-26T16:35:20.745308+00:00"
+  "updated_at": "2026-11-26T16:37:43.109776+00:00"
 }

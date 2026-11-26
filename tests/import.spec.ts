@@ -13,7 +13,7 @@ test("explicit sample confirmation preserves source, keyboard controls and priva
     name: "Import source preview",
   });
   await expect(importButton).toBeDisabled();
-  await page.getByRole("checkbox", { name: "I confirm" }).focus();
+  await page.getByRole("checkbox", { name: "I confirm the delimiter" }).focus();
   await page.keyboard.press("Space");
   // macOS WebKit uses Option-Tab to include native buttons in keyboard navigation.
   await page.keyboard.press(
@@ -60,7 +60,7 @@ test("explicit sample confirmation preserves source, keyboard controls and priva
   });
   await page.context().setOffline(true);
   await page.getByRole("button", { name: "Try inventory sample" }).click();
-  await page.getByRole("checkbox", { name: "I confirm" }).check();
+  await page.getByRole("checkbox", { name: "I confirm the delimiter" }).check();
   await importButton.click();
   await expect(page.getByRole("status")).toContainText("5 source rows ready");
 });
@@ -79,7 +79,7 @@ test("pagination and recoverable errors keep confirmed source", async ({
         ),
     ),
   });
-  await page.getByRole("checkbox", { name: "I confirm" }).check();
+  await page.getByRole("checkbox", { name: "I confirm the delimiter" }).check();
   await page.getByRole("button", { name: "Import source preview" }).click();
   await expect(page.getByRole("status")).toContainText("101 source rows ready");
   await expect(page.locator("tbody tr")).toHaveCount(50);
@@ -93,7 +93,7 @@ test("pagination and recoverable errors keep confirmed source", async ({
     mimeType: "text/csv",
     buffer: Buffer.from([255]),
   });
-  await page.getByRole("checkbox", { name: "I confirm" }).check();
+  await page.getByRole("checkbox", { name: "I confirm the delimiter" }).check();
   await page.getByRole("button", { name: "Import source preview" }).click();
   await expect(page.getByRole("alert")).toContainText("UTF-8");
   await expect(page.getByRole("alert")).toBeFocused();
