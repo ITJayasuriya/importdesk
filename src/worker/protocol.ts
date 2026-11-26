@@ -1,3 +1,4 @@
+import type { RequiredResult } from "../domain/inventory";
 import type { z } from "zod";
 import type { SourceRow } from "../domain/csv";
 import type { requestSchema } from "./request-schema";
@@ -8,6 +9,7 @@ export type Reply = Identity &
     | { type: "progress"; rows: number }
     | { type: "imported"; total: number; headers: string[]; rows: SourceRow[] }
     | { type: "page"; page: number; rows: SourceRow[] }
+    | { type: "validated"; result: RequiredResult }
     | { type: "cancelled" }
     | { type: "error"; message: string }
   );
