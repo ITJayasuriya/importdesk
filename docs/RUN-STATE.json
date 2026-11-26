@@ -1,32 +1,36 @@
 {
   "schema_version": 1,
-  "local_date": "2026-11-25",
-  "state": "awaiting_ci",
-  "planned_daily_goal": "Inventory acceptance contract and bounded CSV parsing foundation with regression tests",
-  "commit_target": 4,
+  "local_date": "2026-11-26",
+  "state": "in_progress",
+  "planned_daily_goal": "Explicit inventory destination mapping and bounded worker required-field validation",
+  "commit_target": 3,
   "completed_unit_ids": [
-    "M0-synthetic-contract",
-    "M1-bounded-parser",
-    "M1-worker-pages",
-    "M1-import-source-preview"
+    "inventory-required-contract",
+    "worker-required-validation",
+    "inventory-mapping-ui",
+    "mapping-contributor-contract-review"
   ],
   "actual_commit_shas": [
-    "d21c91c95601ab62c405eb80bd25955952bc346b",
-    "2ac1edec8f258268ce51667e81afa0936a00b2f1",
-    "e47ff78d798dda74c598835fb8ff2cd9dd2f0b9d",
-    "93b732659b2d0b4ddc19aca6028b2b3833bf0eab"
+    "5352e40278746a004fed7de91d1c9c9cdd5cc157",
+    "9254e7995c26a21503d88b361454caa4b8b37a01",
+    "981e14c7bc34be7a14e0471971799b18028e131d",
+    "8f9c9c71f2015ccb2e94bfb4190b6bc66fd13b5e",
+    "9d3ff93b45e6200a5340b24c12856ea300298a0e"
   ],
-  "branch": "codex/inventory-alpha",
-  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/13",
-  "last_tested_sha": "93b732659b2d0b4ddc19aca6028b2b3833bf0eab",
+  "branch": "feat/inventory-mapping",
+  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/14",
+  "last_tested_sha": "9d3ff93b45e6200a5340b24c12856ea300298a0e",
   "actual_test_results": {
-    "unit": "16/16 passed including obsolete cancellation isolation",
-    "browsers": "6/6 local Chromium/WebKit passed; final stale-cancel guard covered by unit test, CI to rerun all browsers",
+    "unit": "21/21 passed",
     "check": "passed",
-    "build": "passed; main bundle 71.52 KiB gzip; deferred worker 115.69 KiB raw"
+    "build": "passed; 72.86 KiB gzip main, 117.87 kB deferred worker (before final accessible-label change)",
+    "local_browsers": "10/10 Chromium/WebKit passed; screenshots desktop/360px inspected; axe and offline mapping passed",
+    "self_review": "No unresolved structural blocker; docs/review-2026-11-26.md",
+    "local_mapping_after_ci_fix": "4/4 Chromium/WebKit passed; check passed",
+    "ci_initial": "14/15 browser cases; Firefox crashed in axe after offline assertions"
   },
-  "next_action": "Inspect PR 13 required Linux CI; merge only on green, build main and deploy once, verify actual live source journey",
-  "dirty_files": [],
-  "blocker": null,
-  "updated_at": "2026-11-25T11:34:50.533068+00:00"
+  "next_action": "Native label/for plus combobox role/name locators; default axe/offline assertions restored. Rerun local mapping and full required CI",
+  "dirty_files": ["docs/RUN-STATE.json"],
+  "blocker": "Required CI must verify mitigation for known Firefox build1572 ARIA reflection crash (Playwright #44135)",
+  "updated_at": "2026-11-26T16:51:06.314757+00:00"
 }

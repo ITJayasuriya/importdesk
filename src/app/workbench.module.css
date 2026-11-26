@@ -105,3 +105,21 @@
     padding: 1rem;
   }
 }
+.mappingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem;
+}
+.mappingGrid > div {
+  min-width: 0;
+}
+.mappingGrid select {
+  margin-block-start: 0.5rem;
+  width: 100%;
+}
+.mappingGrid small {
+  display: block;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}

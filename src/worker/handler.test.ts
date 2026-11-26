@@ -67,3 +67,74 @@ it("obsolete cancellation cannot abort a newer import", async () => {
   await pending;
   expect(replies.at(-1)?.type).toBe("imported");
 });
+
+it("validates required fields without replacing source and rejects invalid/stale mappings", async () => {
+  const replies: Reply[] = [];
+  const handle = createHandler((reply) => replies.push(reply));
+  await handle(
+    request(
+      "asset_id,label,category,location,inspection_date,quantity\n0001,,x,Hall,01/02/2026,0",
+    ),
+  );
+  const mapping = {
+    asset_id: 0,
+    label: 1,
+    category: 2,
+    location: 3,
+    inspection_date: 4,
+    quantity: 5,
+  };
+  await handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  expect(replies.at(-1)).toMatchObject({
+    type: "validated",
+    result: {
+      total: 1,
+      valid: 0,
+      rejected: 1,
+      examples: [{ rowId: "row:1", field: "label", code: "REQUIRED_EMPTY" }],
+    },
+  });
+  await handle({
+    ...identity,
+    type: "VALIDATE_REQUIRED",
+    mapping: { ...mapping, label: 0 },
+  });
+  expect(replies.at(-1)).toMatchObject({ type: "error" });
+  await handle({
+    ...identity,
+    revision: 1,
+    type: "VALIDATE_REQUIRED",
+    mapping,
+  });
+  expect(replies.at(-1)).toMatchObject({ type: "error" });
+  await handle({ ...identity, type: "GET_ROWS", page: 0 });
+  expect(replies.at(-1)).toMatchObject({
+    type: "page",
+    rows: [{ cells: ["0001", "", "x", "Hall", "01/02/2026", "0"] }],
+  });
+});
+it("cancelled or replaced validation cannot publish stale counts", async () => {
+  const replies: Reply[] = [];
+  const handle = createHandler((reply) => replies.push(reply));
+  const header = "asset_id,label,category,location,inspection_date,quantity\n";
+  await handle(request(header + "1,x,x,x,x,1\n".repeat(1001)));
+  const mapping = {
+    asset_id: 0,
+    label: 1,
+    category: 2,
+    location: 3,
+    inspection_date: 4,
+    quantity: 5,
+  };
+  let pending = handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  await handle({ ...identity, type: "CANCEL" });
+  await pending;
+  expect(replies.some((reply) => reply.type === "validated")).toBe(false);
+  pending = handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  await handle({
+    ...request(header + "2,y,y,y,y,2"),
+    sessionId: "replacement",
+  });
+  await pending;
+  expect(replies.some((reply) => reply.type === "validated")).toBe(false);
+});

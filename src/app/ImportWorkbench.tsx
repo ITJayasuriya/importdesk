@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { InventoryMapping } from "../features/import/InventoryMapping";
+import type { RequiredResult, Mapping } from "../domain/inventory";
 import sample from "../../fixtures/inventory.csv?raw";
 import type { ImportOptions, SourceRow } from "../domain/csv";
 import {
@@ -34,6 +36,7 @@ export function ImportWorkbench() {
     rows: SourceRow[];
     page: number;
   } | null>(null);
+  const [validation, setValidation] = useState<RequiredResult | null>(null);
   const importingName = useRef("");
 
   useEffect(() => {
@@ -59,10 +62,18 @@ export function ImportWorkbench() {
         return;
       }
       if (reply.type === "cancelled") {
-        setStatus("Import cancelled. No partial source was accepted.");
+        setStatus("Processing cancelled. No partial result was accepted.");
+        return;
+      }
+      if (reply.type === "validated") {
+        setValidation(reply.result);
+        setStatus(
+          `Required-field check complete: ${reply.result.rejected} rows need attention.`,
+        );
         return;
       }
       if (reply.type === "imported") {
+        setValidation(null);
         setSource({
           identity: active.current,
           name: importingName.current,
@@ -278,8 +289,8 @@ export function ImportWorkbench() {
           </div>
           <p>
             Whitespace and dates remain exactly as supplied. Empty cells show
-            “(empty)”; absent fields show “(missing)”. Mapping, repairs and
-            exports are still in development.
+            “(empty)”; absent fields show “(missing)”. Repairs and exports are
+            still in development.
           </p>
           <div
             role="region"
@@ -352,6 +363,25 @@ export function ImportWorkbench() {
             </button>
           </nav>
         </section>
+      )}
+      {source && (
+        <InventoryMapping
+          key={source.identity.sessionId}
+          headers={source.headers}
+          busy={busy}
+          result={validation}
+          onChange={() => setValidation(null)}
+          onValidate={(mapping: Mapping) => {
+            setValidation(null);
+            setStatus("Checking required fields…");
+            send({
+              ...source.identity,
+              requestId: crypto.randomUUID(),
+              type: "VALIDATE_REQUIRED",
+              mapping,
+            });
+          }}
+        />
       )}
       <footer>
         In development · Local processing, explicit choices, unchanged
