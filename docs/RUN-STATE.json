@@ -12,11 +12,12 @@
   ],
   "actual_commit_shas": [
     "5352e40278746a004fed7de91d1c9c9cdd5cc157",
-    "9254e7995c26a21503d88b361454caa4b8b37a01"
+    "9254e7995c26a21503d88b361454caa4b8b37a01",
+    "981e14c7bc34be7a14e0471971799b18028e131d"
   ],
   "branch": "feat/inventory-mapping",
-  "open_pr": null,
-  "last_tested_sha": "c65a84733c16d2563b685539d9531a09a70ad633",
+  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/14",
+  "last_tested_sha": "981e14c7bc34be7a14e0471971799b18028e131d",
   "actual_test_results": {
     "unit": "21/21 passed",
     "check": "passed",
@@ -24,15 +25,8 @@
     "local_browsers": "10/10 Chromium/WebKit passed; screenshots desktop/360px inspected; axe and offline mapping passed",
     "self_review": "No unresolved structural blocker; docs/review-2026-11-26.md"
   },
-  "next_action": "Run final checks, commit mapping contract/review, push existing branch and open one PR for #7; required Linux CI before merge",
-  "dirty_files": [
-    "README.md",
-    "docs/STATUS.md",
-    "docs/RUN-STATE.json",
-    "docs/testing.md",
-    "docs/inventory-mapping.md",
-    "docs/review-2026-11-26.md"
-  ],
-  "blocker": null,
-  "updated_at": "2026-11-26T16:38:33.402584+00:00"
+  "next_action": "Fix Firefox axe/offline harness interaction; rerun local mapping and required CI at new reviewed head; do not merge red check",
+  "dirty_files": ["docs/RUN-STATE.json"],
+  "blocker": "Initial PR CI Firefox page crashed during axe frame evaluation; 14/15 browser cases passed",
+  "updated_at": "2026-11-26T16:43:31.849705+00:00"
 }

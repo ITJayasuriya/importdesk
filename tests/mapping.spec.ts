@@ -40,6 +40,8 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   await expect(
     page.getByRole("cell", { name: "01/02/2026", exact: true }),
   ).toBeVisible();
+  // Keep the offline product assertions separate from axe’s browser-page orchestration.
+  await page.context().setOffline(false);
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
     path: "test-results/mapping-desktop.png",
