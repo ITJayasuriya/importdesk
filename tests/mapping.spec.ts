@@ -42,7 +42,10 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   ).toBeVisible();
   // Keep the offline product assertions separate from axe’s browser-page orchestration.
   await page.context().setOffline(false);
-  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await expect(page.locator("iframe")).toHaveCount(0);
+  expect(
+    (await new AxeBuilder({ page }).setLegacyMode().analyze()).violations,
+  ).toEqual([]);
   await page.screenshot({
     path: "test-results/mapping-desktop.png",
     fullPage: true,
@@ -53,7 +56,10 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await expect(page.locator("iframe")).toHaveCount(0);
+  expect(
+    (await new AxeBuilder({ page }).setLegacyMode().analyze()).violations,
+  ).toEqual([]);
   await page.screenshot({
     path: "test-results/mapping-mobile.png",
     fullPage: true,
