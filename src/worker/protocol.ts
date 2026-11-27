@@ -1,3 +1,4 @@
+import type { RepairPreview } from "../domain/repair";
 import type { RequiredResult } from "../domain/inventory";
 import type { z } from "zod";
 import type { SourceRow } from "../domain/csv";
@@ -10,6 +11,13 @@ export type Reply = Identity &
     | { type: "imported"; total: number; headers: string[]; rows: SourceRow[] }
     | { type: "page"; page: number; rows: SourceRow[] }
     | { type: "validated"; result: RequiredResult }
+    | { type: "fill_preview"; preview: RepairPreview }
+    | {
+        type: "fill_committed";
+        newRevision: number;
+        result: RequiredResult;
+        stepCount: number;
+      }
     | { type: "cancelled" }
     | { type: "error"; message: string }
   );

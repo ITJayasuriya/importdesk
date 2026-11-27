@@ -78,3 +78,12 @@ it("enforces mapping, replacement byte limits and cancellation; caps examples", 
     await previewFill(large, [], { column: 1, value: "x" }, () => true),
   ).toBeNull();
 });
+
+it("filling a later absent field preserves absence of intermediate columns", () => {
+  const row = source.rows[2]!;
+  const current = repairedRow(row, [{ column: 5, value: "0" }]);
+  expect(current.cells[1]).toBeUndefined();
+  expect(current.cells[4]).toBeUndefined();
+  expect(current.cells[5]).toBe("0");
+  expect(row.cells).toEqual(["0003"]);
+});

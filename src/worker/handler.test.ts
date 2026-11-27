@@ -138,3 +138,103 @@ it("cancelled or replaced validation cannot publish stale counts", async () => {
   await pending;
   expect(replies.some((reply) => reply.type === "validated")).toBe(false);
 });
+
+it("requires a live preview, commits atomically once and rejects obsolete revisions while originals remain unchanged", async () => {
+  const replies: Reply[] = [];
+  const handle = createHandler((reply) => replies.push(reply));
+  await handle(
+    request(
+      "asset_id,label,category,location,inspection_date,quantity\n0001,,x,Hall,01/02/2026,0",
+    ),
+  );
+  const mapping = {
+    asset_id: 0,
+    label: 1,
+    category: 2,
+    location: 3,
+    inspection_date: 4,
+    quantity: 5,
+  };
+  const preview = {
+    ...identity,
+    requestId: "preview",
+    type: "PREVIEW_FILL",
+    mapping,
+    field: "label",
+    value: "Spare",
+  };
+  await handle({ ...identity, type: "COMMIT_FILL", previewId: "preview" });
+  expect(replies.at(-1)?.type).toBe("error");
+  await handle(preview);
+  expect(replies.at(-1)).toMatchObject({
+    type: "fill_preview",
+    preview: { affected: 1 },
+  });
+  await handle({
+    ...identity,
+    requestId: "commit",
+    type: "COMMIT_FILL",
+    previewId: "preview",
+  });
+  expect(replies.at(-1)).toMatchObject({
+    type: "fill_committed",
+    newRevision: 1,
+    stepCount: 1,
+    result: { valid: 1, rejected: 0 },
+  });
+  await handle({ ...identity, type: "COMMIT_FILL", previewId: "preview" });
+  expect(replies.at(-1)?.type).toBe("error");
+  await handle({ ...identity, revision: 1, type: "GET_ROWS", page: 0 });
+  expect(replies.at(-1)).toMatchObject({
+    type: "page",
+    rows: [{ cells: ["0001", "", "x", "Hall", "01/02/2026", "0"] }],
+  });
+  await handle({ ...preview, revision: 1 });
+  expect(replies.at(-1)).toMatchObject({
+    type: "fill_preview",
+    preview: { affected: 0 },
+  });
+});
+it("cancelled previews/commits cannot mutate the repair revision", async () => {
+  const replies: Reply[] = [];
+  const handle = createHandler((reply) => replies.push(reply));
+  await handle(
+    request(
+      "asset_id,label,category,location,inspection_date,quantity\n" +
+        "1,,x,x,x,1\n".repeat(1001),
+    ),
+  );
+  const mapping = {
+    asset_id: 0,
+    label: 1,
+    category: 2,
+    location: 3,
+    inspection_date: 4,
+    quantity: 5,
+  };
+  const preview = {
+    ...identity,
+    type: "PREVIEW_FILL",
+    mapping,
+    field: "label",
+    value: "Spare",
+  };
+  let pending = handle(preview);
+  await handle({ ...identity, type: "CANCEL" });
+  await pending;
+  expect(replies.some((r) => r.type === "fill_preview")).toBe(false);
+  await handle(preview);
+  pending = handle({
+    ...identity,
+    type: "COMMIT_FILL",
+    previewId: identity.requestId,
+  });
+  await handle({ ...identity, type: "CANCEL" });
+  await pending;
+  expect(replies.some((r) => r.type === "fill_committed")).toBe(false);
+  await handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  expect(replies.at(-1)).toMatchObject({
+    type: "validated",
+    result: { rejected: 1001 },
+  });
+});

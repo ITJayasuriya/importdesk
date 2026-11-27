@@ -31,5 +31,24 @@ export const requestSchema = z.discriminatedUnion("type", [
     page: z.number().int().min(0).max(1999),
   }),
   z.object({ ...identity, type: z.literal("VALIDATE_REQUIRED"), mapping }),
+  z.object({
+    ...identity,
+    type: z.literal("PREVIEW_FILL"),
+    mapping,
+    field: z.enum([
+      "asset_id",
+      "label",
+      "category",
+      "location",
+      "inspection_date",
+      "quantity",
+    ]),
+    value: z.string().max(65536),
+  }),
+  z.object({
+    ...identity,
+    type: z.literal("COMMIT_FILL"),
+    previewId: z.string().min(1),
+  }),
   z.object({ ...identity, type: z.literal("CANCEL") }),
 ]);

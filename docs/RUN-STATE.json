@@ -5,21 +5,27 @@
   "planned_daily_goal": "Previewed, revision-safe missing-value repair with immutable originals",
   "commit_target": 3,
   "completed_unit_ids": [
-    "pure-fill-contract"
+    "pure-fill-contract",
+    "worker-preview-commit",
+    "accessible-fill-ui"
   ],
-  "actual_commit_shas": [],
+  "actual_commit_shas": ["2eb8184"],
   "branch": "feat/missing-value-repair",
   "open_pr": null,
   "last_tested_sha": "07cf1b07e8239876aa4ce4496b5f946506636c21",
   "actual_test_results": {
-    "unit": "23/23 passed; new fill/immutability/cancellation/limits coverage"
+    "check": "passed",
+    "unit": "26/26 passed",
+    "build": "passed; main73.77 kB gzip, worker119.62 kB raw",
+    "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
+    "live_before_change": "07cf1b07e823 sample mapping verified"
   },
-  "next_action": "Integrate worker preview/apply and accessible repair UI; export deferred until destination rules are complete",
+  "next_action": "Commit integrated repair, document review and user contract, push PR; require Linux CI before merge",
   "dirty_files": [
     "docs/STATUS.md",
     "docs/OPERATIONS.md",
     "docs/RUN-STATE.json"
   ],
   "blocker": null,
-  "updated_at": "2026-11-27T15:59:48.287995+00:00"
+  "updated_at": "2026-11-27T16:03:50.404591+00:00"
 }

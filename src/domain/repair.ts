@@ -23,8 +23,7 @@ export function repairedRow(
   for (const step of steps) {
     if ((cells[step.column] ?? "").trim() !== "") continue;
     if (cells === row.cells) cells = [...cells];
-    // A short record may have absent columns between the original end and this cell.
-    while (cells.length <= step.column) cells.push("");
+    // Sparse slots preserve absent intermediate fields in short source records.
     cells[step.column] = step.value;
   }
   return cells === row.cells ? row : { ...row, cells };
