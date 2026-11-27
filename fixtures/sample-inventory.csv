@@ -1,0 +1,5 @@
+asset_id,label,category,location,inspection_date,quantity
+001,Computer,Lab,Room 101,2023-01-15,1
+002,Projector,Classroom,Room 205,2023-02-20,1
+003,Monitor,Office,Room 301,2023-01-10,2
+004,Printer,Office,Room 302,2023-03-05,1
