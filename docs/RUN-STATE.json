@@ -1,36 +1,38 @@
 {
   "schema_version": 1,
-  "local_date": "2026-11-26",
+  "local_date": "2026-11-27",
   "state": "in_progress",
-  "planned_daily_goal": "Explicit inventory destination mapping and bounded worker required-field validation",
+  "planned_daily_goal": "Previewed, revision-safe missing-value repair with immutable originals",
   "commit_target": 3,
   "completed_unit_ids": [
-    "inventory-required-contract",
-    "worker-required-validation",
-    "inventory-mapping-ui",
-    "mapping-contributor-contract-review"
+    "pure-fill-contract",
+    "worker-preview-commit",
+    "accessible-fill-ui"
   ],
   "actual_commit_shas": [
-    "5352e40278746a004fed7de91d1c9c9cdd5cc157",
-    "9254e7995c26a21503d88b361454caa4b8b37a01",
-    "981e14c7bc34be7a14e0471971799b18028e131d",
-    "8f9c9c71f2015ccb2e94bfb4190b6bc66fd13b5e",
-    "9d3ff93b45e6200a5340b24c12856ea300298a0e"
+    "2eb81846a54cfc8e7ea298929ede0b6c331409bf",
+    "98b9fe179ee2652d2df894eacfeee5fe61504cd1",
+    "444280330025cc3334501edaa15e9d00473b9568",
+    "52f88889a70c4aa8c94cbf1c5f3a127556e5f814"
   ],
-  "branch": "feat/inventory-mapping",
-  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/14",
-  "last_tested_sha": "9d3ff93b45e6200a5340b24c12856ea300298a0e",
+  "branch": "feat/missing-value-repair",
+  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/15",
+  "last_tested_sha": "52f88889a70c4aa8c94cbf1c5f3a127556e5f814",
   "actual_test_results": {
-    "unit": "21/21 passed",
     "check": "passed",
-    "build": "passed; 72.86 KiB gzip main, 117.87 kB deferred worker (before final accessible-label change)",
-    "local_browsers": "10/10 Chromium/WebKit passed; screenshots desktop/360px inspected; axe and offline mapping passed",
-    "self_review": "No unresolved structural blocker; docs/review-2026-11-26.md",
-    "local_mapping_after_ci_fix": "4/4 Chromium/WebKit passed; check passed",
-    "ci_initial": "14/15 browser cases; Firefox crashed in axe after offline assertions"
+    "unit": "26/26 passed",
+    "build": "passed; main73.77 kB gzip, worker119.62 kB raw",
+    "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
+    "live_before_change": "07cf1b07e823 sample mapping verified",
+    "ci_initial": "Failed46030537158:17/18 browsers; Firefox axe page crash after product assertions",
+    "ci_second": "46030932027 failed17/18; textbox-only change insufficient"
   },
-  "next_action": "Native label/for plus combobox role/name locators; default axe/offline assertions restored. Rerun local mapping and full required CI",
-  "dirty_files": ["docs/RUN-STATE.json"],
-  "blocker": "Required CI must verify mitigation for known Firefox build1572 ARIA reflection crash (Playwright #44135)",
-  "updated_at": "2026-11-26T16:51:06.314757+00:00"
+  "next_action": "Retest container attribute selectors to avoid named-region ARIA reflection in pinned Firefox; require all CI checks before merge",
+  "dirty_files": [
+    "docs/STATUS.md",
+    "docs/OPERATIONS.md",
+    "docs/RUN-STATE.json"
+  ],
+  "blocker": "PR15 initial CI17/18 browsers; Firefox crashed inside axe after repair assertions",
+  "updated_at": "2026-11-27T16:10:32.308816+00:00"
 }

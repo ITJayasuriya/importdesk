@@ -122,8 +122,8 @@ export function InventoryMapping({
             claimed.
           </p>
           <p>
-            Whitespace-only cells count as empty; source values stay unchanged.
-            Showing up to 50 issue examples.
+            Whitespace-only cells count as empty. Results include applied
+            repairs; originals stay unchanged. Showing up to 50 issue examples.
           </p>
           {result.examples.length > 0 && (
             <div
@@ -134,14 +134,14 @@ export function InventoryMapping({
             >
               <table>
                 <caption>
-                  Required-field issue examples · original values
+                  Required-field issue examples · current values
                 </caption>
                 <thead>
                   <tr>
                     <th scope="col">Source line</th>
                     <th scope="col">Destination</th>
                     <th scope="col">Reason</th>
-                    <th scope="col">Original</th>
+                    <th scope="col">Current value</th>
                   </tr>
                 </thead>
                 <tbody>

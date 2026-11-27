@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { MissingValueRepair } from "../features/review/MissingValueRepair";
+import type { RepairPreview } from "../domain/repair";
 import { InventoryMapping } from "../features/import/InventoryMapping";
 import type { RequiredResult, Mapping } from "../domain/inventory";
 import sample from "../../fixtures/inventory.csv?raw";
@@ -38,6 +40,12 @@ export function ImportWorkbench() {
   } | null>(null);
   const [validation, setValidation] = useState<RequiredResult | null>(null);
   const importingName = useRef("");
+  const [mapping, setMapping] = useState<Mapping | null>(null);
+  const [preview, setPreview] = useState<{
+    id: string;
+    result: RepairPreview;
+  } | null>(null);
+  const [stepCount, setStepCount] = useState(0);
 
   useEffect(() => {
     const instance = new Worker(
@@ -65,6 +73,28 @@ export function ImportWorkbench() {
         setStatus("Processing cancelled. No partial result was accepted.");
         return;
       }
+      if (reply.type === "fill_preview") {
+        setPreview({ id: reply.requestId, result: reply.preview });
+        setStatus(
+          `Repair preview ready: ${reply.preview.affected} cells will change.`,
+        );
+        return;
+      }
+      if (reply.type === "fill_committed") {
+        setSource(
+          (previous) =>
+            previous && {
+              ...previous,
+              identity: { ...previous.identity, revision: reply.newRevision },
+            },
+        );
+        setValidation(reply.result);
+        setStepCount(reply.stepCount);
+        setStatus(
+          `Repair applied. ${reply.result.rejected} rows still need required values. Original unchanged.`,
+        );
+        return;
+      }
       if (reply.type === "validated") {
         setValidation(reply.result);
         setStatus(
@@ -74,6 +104,8 @@ export function ImportWorkbench() {
       }
       if (reply.type === "imported") {
         setValidation(null);
+        setMapping(null);
+        setStepCount(0);
         setSource({
           identity: active.current,
           name: importingName.current,
@@ -110,6 +142,7 @@ export function ImportWorkbench() {
 
   function send(request: Request) {
     active.current = request;
+    setPreview(null);
     setError("");
     setBusy(true);
     worker.current?.postMessage(request);
@@ -289,8 +322,8 @@ export function ImportWorkbench() {
           </div>
           <p>
             Whitespace and dates remain exactly as supplied. Empty cells show
-            “(empty)”; absent fields show “(missing)”. Repairs and exports are
-            still in development.
+            “(empty)”; absent fields show “(missing)”. The original table stays
+            unchanged when repairs are applied.
           </p>
           <div
             role="region"
@@ -366,12 +399,17 @@ export function ImportWorkbench() {
       )}
       {source && (
         <InventoryMapping
-          key={source.identity.sessionId}
+          key={`mapping:${source.identity.sessionId}`}
           headers={source.headers}
           busy={busy}
           result={validation}
-          onChange={() => setValidation(null)}
+          onChange={() => {
+            setValidation(null);
+            setMapping(null);
+            setPreview(null);
+          }}
           onValidate={(mapping: Mapping) => {
+            setMapping(mapping);
             setValidation(null);
             setStatus("Checking required fields…");
             send({
@@ -380,6 +418,34 @@ export function ImportWorkbench() {
               type: "VALIDATE_REQUIRED",
               mapping,
             });
+          }}
+        />
+      )}
+      {source && mapping && validation && (
+        <MissingValueRepair
+          key={`repair:${source.identity.sessionId}`}
+          busy={busy}
+          stepCount={stepCount}
+          preview={preview?.result ?? null}
+          onChange={() => setPreview(null)}
+          onPreview={(field, value) =>
+            send({
+              ...source.identity,
+              requestId: crypto.randomUUID(),
+              type: "PREVIEW_FILL",
+              mapping,
+              field,
+              value,
+            })
+          }
+          onApply={() => {
+            if (preview)
+              send({
+                ...source.identity,
+                requestId: crypto.randomUUID(),
+                type: "COMMIT_FILL",
+                previewId: preview.id,
+              });
           }}
         />
       )}

@@ -51,7 +51,8 @@ select {
 }
 button,
 select,
-input[type="file"] {
+input[type="file"],
+input[type="text"] {
   min-height: 2.75rem;
   max-width: 100%;
 }
@@ -118,4 +119,17 @@ footer {
   select {
     font-size: 1rem;
   }
+}
+
+input[type="text"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  color: var(--ink);
+}
+h3 {
+  font-size: 1rem;
+  line-height: 1.3;
 }
