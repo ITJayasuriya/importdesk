@@ -93,6 +93,7 @@ export async function validateRequired(
   source: Source,
   mapping: Mapping,
   cancelled: () => boolean,
+  viewRow: (row: SourceRow) => SourceRow = (row) => row,
 ): Promise<RequiredResult | null> {
   const problems = mappingProblems(mapping, source.headers);
   if (problems.length) throw new Error(problems.join(" "));
@@ -116,7 +117,7 @@ export async function validateRequired(
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
       if (cancelled()) return null;
     }
-    const issues = requiredIssues(source.rows[index]!, mapping);
+    const issues = requiredIssues(viewRow(source.rows[index]!), mapping);
     if (issues.length) result.rejected++;
     else result.valid++;
     result.issueCount += issues.length;
