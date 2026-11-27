@@ -12,25 +12,27 @@
   "actual_commit_shas": [
     "2eb81846a54cfc8e7ea298929ede0b6c331409bf",
     "98b9fe179ee2652d2df894eacfeee5fe61504cd1",
-    "444280330025cc3334501edaa15e9d00473b9568"
+    "444280330025cc3334501edaa15e9d00473b9568",
+    "52f88889a70c4aa8c94cbf1c5f3a127556e5f814"
   ],
   "branch": "feat/missing-value-repair",
   "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/15",
-  "last_tested_sha": "444280330025cc3334501edaa15e9d00473b9568",
+  "last_tested_sha": "52f88889a70c4aa8c94cbf1c5f3a127556e5f814",
   "actual_test_results": {
     "check": "passed",
     "unit": "26/26 passed",
     "build": "passed; main73.77 kB gzip, worker119.62 kB raw",
     "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
     "live_before_change": "07cf1b07e823 sample mapping verified",
-    "ci_initial": "Failed46030537158:17/18 browsers; Firefox axe page crash after product assertions"
+    "ci_initial": "Failed46030537158:17/18 browsers; Firefox axe page crash after product assertions",
+    "ci_second": "46030932027 failed17/18; textbox-only change insufficient"
   },
-  "next_action": "Retest native role/name textbox selectors for pinned Firefox ARIA-reflection crash; retain all axe/offline assertions",
+  "next_action": "Retest container attribute selectors to avoid named-region ARIA reflection in pinned Firefox; require all CI checks before merge",
   "dirty_files": [
     "docs/STATUS.md",
     "docs/OPERATIONS.md",
     "docs/RUN-STATE.json"
   ],
   "blocker": "PR15 initial CI17/18 browsers; Firefox crashed inside axe after repair assertions",
-  "updated_at": "2026-11-27T16:07:07.281002+00:00"
+  "updated_at": "2026-11-27T16:10:32.308816+00:00"
 }

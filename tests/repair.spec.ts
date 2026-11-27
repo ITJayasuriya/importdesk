@@ -24,7 +24,7 @@ test("keyboard repair previews exact values offline and retains originals across
   await page.getByRole("button", { name: "Preview replacement" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("status")).toContainText("1 cells will change");
-  const preview = page.getByRole("region", { name: "Repair preview examples" });
+  const preview = page.locator('[aria-label="Repair preview examples"]');
   await expect(
     preview.getByRole("cell", { name: "(empty)", exact: true }),
   ).toBeVisible();
@@ -51,9 +51,7 @@ test("keyboard repair previews exact values offline and retains originals across
   await expect(
     page.getByText("1 repair steps applied.", { exact: false }),
   ).toBeVisible();
-  const original = page.getByRole("region", {
-    name: "Scrollable source table",
-  });
+  const original = page.locator('[aria-label="Scrollable source table"]');
   await expect(
     original.getByRole("cell", { name: "Replacement stool", exact: true }),
   ).toHaveCount(0);
