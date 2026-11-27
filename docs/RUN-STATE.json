@@ -9,10 +9,13 @@
     "worker-preview-commit",
     "accessible-fill-ui"
   ],
-  "actual_commit_shas": ["2eb8184"],
+  "actual_commit_shas": [
+    "2eb81846a54cfc8e7ea298929ede0b6c331409bf",
+    "98b9fe179ee2652d2df894eacfeee5fe61504cd1"
+  ],
   "branch": "feat/missing-value-repair",
   "open_pr": null,
-  "last_tested_sha": "07cf1b07e8239876aa4ce4496b5f946506636c21",
+  "last_tested_sha": "98b9fe179ee2652d2df894eacfeee5fe61504cd1",
   "actual_test_results": {
     "check": "passed",
     "unit": "26/26 passed",
@@ -20,12 +23,12 @@
     "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
     "live_before_change": "07cf1b07e823 sample mapping verified"
   },
-  "next_action": "Commit integrated repair, document review and user contract, push PR; require Linux CI before merge",
+  "next_action": "Commit contributor repair contract/self-review, push PR and inspect required Linux CI; merge only reviewed head",
   "dirty_files": [
     "docs/STATUS.md",
     "docs/OPERATIONS.md",
     "docs/RUN-STATE.json"
   ],
   "blocker": null,
-  "updated_at": "2026-11-27T16:03:50.404591+00:00"
+  "updated_at": "2026-11-27T16:04:36.517945+00:00"
 }
