@@ -18,7 +18,9 @@ test("keyboard repair previews exact values offline and retains originals across
   await page.getByRole("button", { name: "Check required fields" }).click();
   await expect(page.getByRole("status")).toContainText("1 rows need attention");
   await page.context().setOffline(true);
-  await page.getByLabel("Replacement value").fill("Spare stool");
+  await page
+    .getByRole("textbox", { name: "Replacement value", exact: true })
+    .fill("Spare stool");
   await page.getByRole("button", { name: "Preview replacement" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("status")).toContainText("1 cells will change");
@@ -30,7 +32,9 @@ test("keyboard repair previews exact values offline and retains originals across
     preview.getByRole("cell", { name: "Spare stool", exact: true }),
   ).toBeVisible();
   // Editing a preview requires another preview before mutation.
-  await page.getByLabel("Replacement value").fill("Replacement stool");
+  await page
+    .getByRole("textbox", { name: "Replacement value", exact: true })
+    .fill("Replacement stool");
   await expect(
     page.getByRole("button", { name: "Apply 1 replacements" }),
   ).toHaveCount(0);

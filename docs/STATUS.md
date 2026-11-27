@@ -1,6 +1,6 @@
 # Status
 
-Stage: private CSV import, source preview, explicit inventory mapping and required-field checks implemented; repair/export alpha remains unfinished.
+Stage: private CSV import, source preview, explicit inventory mapping, required-field checks and previewed missing-value repair implemented; full validation/export alpha remains unfinished.
 
 ## Current implementation — 25 November 2026 (day 1)
 
@@ -50,3 +50,7 @@ Final operational records (RUN-STATE.json, STATUS.md, OPERATIONS.md) remain loca
 Target 3 retained. Pure missing-value fill preview/application passes 23 unit tests: empty/absent distinction, bounded examples, cancellation, UTF-8 replacement limit, deterministic results and immutable source IDs/dates. Worker/UI integration next. Export is deferred until destination type/date/uniqueness validation is complete; presence alone must not label a row clean. Prior final operational notes are preserved in this branch. Open PRs #1/2/3/12 are unchanged; no necessary implementation PR is awaiting merge.
 
 Day 3 integration verified: 26 unit cases, check/build and 12 Chromium/WebKit browser cases passed. Worker preview IDs are consumed once; source revision advances only after cancellable revalidation succeeds. Source pages always show immutable originals, while presence results include repairs. Editing parameters invalidates the visible preview; mapping changes clear stale results. Keyboard focus returns to the repair heading after apply. Native controls, mobile 16px inputs and bounded before/after table follow existing design. Actual desktop/360px screenshots inspected; no overflow. Review fixes: unique sibling component keys, absent intermediate cell preservation, post-apply focus. Live pre-change sample verified at 07cf1b07e823. Linux CI/review/deployment still pending. No full alpha/v1 claim.
+
+Day 3 PR: https://github.com/ITJayasuriya/importdesk/pull/15 at reviewed head 444280330025cc3334501edaa15e9d00473b9568. Three actual commits: 2eb8184, 98b9fe1, 4442803 (target 3). Required Linux CI46030537158 is pending; do not merge/deploy before green. Neither codex nor codex-automation labels exist; enhancement applied. Next concrete work: destination date/integer/uniqueness rules and previewed explicit date interpretation, then formula-safe validated clean/rejected exports to close M1. All remaining v1 scope above remains required by 5 January 2027.
+
+Initial PR15 CI46030537158 passed check/build/26 units and 17/18 browser cases, but Firefox crashed in axe after successful repair assertions. The new test accidentally used the label selector pattern implicated in yesterday's pinned Firefox1572 ARIA-reflection failure. Changed only those new textbox lookups to role/name selectors; all axe/offline/engine assertions remain. Local affected Chromium/WebKit tests and check passed; required CI rerun is necessary before merge.

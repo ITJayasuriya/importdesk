@@ -11,24 +11,26 @@
   ],
   "actual_commit_shas": [
     "2eb81846a54cfc8e7ea298929ede0b6c331409bf",
-    "98b9fe179ee2652d2df894eacfeee5fe61504cd1"
+    "98b9fe179ee2652d2df894eacfeee5fe61504cd1",
+    "444280330025cc3334501edaa15e9d00473b9568"
   ],
   "branch": "feat/missing-value-repair",
-  "open_pr": null,
-  "last_tested_sha": "98b9fe179ee2652d2df894eacfeee5fe61504cd1",
+  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/15",
+  "last_tested_sha": "444280330025cc3334501edaa15e9d00473b9568",
   "actual_test_results": {
     "check": "passed",
     "unit": "26/26 passed",
     "build": "passed; main73.77 kB gzip, worker119.62 kB raw",
     "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
-    "live_before_change": "07cf1b07e823 sample mapping verified"
+    "live_before_change": "07cf1b07e823 sample mapping verified",
+    "ci_initial": "Failed46030537158:17/18 browsers; Firefox axe page crash after product assertions"
   },
-  "next_action": "Commit contributor repair contract/self-review, push PR and inspect required Linux CI; merge only reviewed head",
+  "next_action": "Retest native role/name textbox selectors for pinned Firefox ARIA-reflection crash; retain all axe/offline assertions",
   "dirty_files": [
     "docs/STATUS.md",
     "docs/OPERATIONS.md",
     "docs/RUN-STATE.json"
   ],
-  "blocker": null,
-  "updated_at": "2026-11-27T16:04:36.517945+00:00"
+  "blocker": "PR15 initial CI17/18 browsers; Firefox crashed inside axe after repair assertions",
+  "updated_at": "2026-11-27T16:07:07.281002+00:00"
 }
