@@ -1,8 +1,5 @@
-import {
-  mappingProblems,
-  validateRequired,
-  type Mapping,
-} from "../domain/inventory";
+import { validateInventory } from "../domain/validation";
+import { mappingProblems, type Mapping } from "../domain/inventory";
 import {
   fillStep,
   previewFill,
@@ -126,7 +123,7 @@ export function createHandler(send: (reply: Reply) => void) {
           throw new Error("Preview this repair again before applying it.");
         steps = [...steps, pending.step];
       }
-      const result = await validateRequired(
+      const result = await validateInventory(
         session.source,
         mapping,
         cancelled,

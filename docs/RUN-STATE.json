@@ -4,35 +4,19 @@
   "state": "in_progress",
   "planned_daily_goal": "Strict inventory date/integer validation and all-member duplicate ID detection",
   "commit_target": 2,
-  "completed_unit_ids": [
-    "pure-inventory-validation"
-  ],
-  "actual_commit_shas": [],
+  "completed_unit_ids": ["pure-inventory-validation", "worker-ui-validation"],
+  "actual_commit_shas": ["cdcd25d023eec9efcbdf4a3899df724af4da176e"],
   "branch": "feat/inventory-validation",
   "open_pr": null,
-  "last_tested_sha": "df2599d7d100d62d2fb3eafcf616d038d621e7d6",
+  "last_tested_sha": null,
   "actual_test_results": {
     "check": "passed",
-    "unit": "26/26 passed",
-    "build": "passed; main73.77 kB gzip, worker119.62 kB raw",
-    "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
-    "live_before_change": "07cf1b07e823 sample mapping verified",
-    "ci_initial": "Failed46030537158:17/18 browsers; Firefox axe page crash after product assertions",
-    "ci_second": "46030932027 failed17/18; textbox-only change insufficient",
-    "ci": "Required Linux quality green at983e998;26units/18browsers all3engines; https://github.com/ITJayasuriya/importdesk/actions/runs/46031380099",
-    "merged_revision": "df2599d7d100d62d2fb3eafcf616d038d621e7d6",
-    "postmerge_build": "passed73.77kB gzip JS119.62kB raw worker",
-    "deployment": "One deployment https://a34ce99b.isuru-importdesk.pages.dev, live alias df2599d7d100 verified",
-    "live_smoke": "Offline preview/apply;5 rows/0 required-rejected after fill;original IDs/date intact;desktop/360px screenshots inspected;zero errors;4same-origin GETs/no bodies;localStorage0/IndexedDB0",
-    "daily_commits": "5 substantive commits against target3 including2necessary test fixes; squash integration not double-counted",
-    "ci_main": "Passed https://github.com/ITJayasuriya/importdesk/actions/runs/46031741754 at df2599d"
+    "unit": "32/32 passed",
+    "build": "passed;73.90kB gzip main;120.43kB raw worker",
+    "local_browsers": "14/14 Chromium/WebKit passed; desktop/360px screenshots inspected; offline/keyboard/axe/error/focus retained"
   },
-  "next_action": "Integrate validation into revision-safe worker and existing mapping/results UI; run browser regression",
-  "dirty_files": [
-    "docs/STATUS.md",
-    "docs/OPERATIONS.md",
-    "docs/RUN-STATE.json"
-  ],
+  "next_action": "Commit integrated canonical validation after self-review, push PR and wait for required Linux quality on current head",
+  "dirty_files": [],
   "blocker": null,
-  "updated_at": "2026-11-28T09:43:11.690168+00:00"
+  "updated_at": "2026-11-28T09:45:32.879061+00:00"
 }

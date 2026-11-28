@@ -1,10 +1,11 @@
-import type { Source, SourceRow } from "./csv";
+import type { SourceRow } from "./csv";
 
 export const INVENTORY_FIELDS = [
   {
     id: "asset_id",
     label: "Asset ID",
-    requirement: "Required string · leading zeroes preserved",
+    requirement:
+      "Required unique string · exact match; leading zeroes preserved",
   },
   { id: "label", label: "Label", requirement: "Required string" },
   { id: "category", label: "Category", requirement: "Required string" },
@@ -12,12 +13,12 @@ export const INVENTORY_FIELDS = [
   {
     id: "inspection_date",
     label: "Inspection date",
-    requirement: "Required date · format validation coming next",
+    requirement: "Required date · YYYY-MM-DD; no format guessing",
   },
   {
     id: "quantity",
     label: "Quantity",
-    requirement: "Required integer · type validation coming next",
+    requirement: "Required integer · e.g. 0, 12 or -1; no spaces or decimals",
   },
 ] as const;
 export type InventoryField = (typeof INVENTORY_FIELDS)[number]["id"];
@@ -56,14 +57,6 @@ export type RequiredIssue = {
   code: "REQUIRED_EMPTY" | "REQUIRED_MISSING";
   rawValue: string | null;
 };
-export type RequiredResult = {
-  total: number;
-  valid: number;
-  rejected: number;
-  issueCount: number;
-  byField: Record<InventoryField, number>;
-  examples: RequiredIssue[];
-};
 export function requiredIssues(
   row: SourceRow,
   mapping: Mapping,
@@ -86,45 +79,4 @@ export function requiredIssues(
         ]
       : [];
   });
-}
-
-// Return bounded examples, never a second full row/issue dataset to the UI.
-export async function validateRequired(
-  source: Source,
-  mapping: Mapping,
-  cancelled: () => boolean,
-  viewRow: (row: SourceRow) => SourceRow = (row) => row,
-): Promise<RequiredResult | null> {
-  const problems = mappingProblems(mapping, source.headers);
-  if (problems.length) throw new Error(problems.join(" "));
-  const result: RequiredResult = {
-    total: source.rows.length,
-    valid: 0,
-    rejected: 0,
-    issueCount: 0,
-    byField: {
-      asset_id: 0,
-      label: 0,
-      category: 0,
-      location: 0,
-      inspection_date: 0,
-      quantity: 0,
-    },
-    examples: [],
-  };
-  for (let index = 0; index < source.rows.length; index++) {
-    if (index % 500 === 0) {
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
-      if (cancelled()) return null;
-    }
-    const issues = requiredIssues(viewRow(source.rows[index]!), mapping);
-    if (issues.length) result.rejected++;
-    else result.valid++;
-    result.issueCount += issues.length;
-    for (const issue of issues) {
-      result.byField[issue.field]++;
-      if (result.examples.length < 50) result.examples.push(issue);
-    }
-  }
-  return result;
 }

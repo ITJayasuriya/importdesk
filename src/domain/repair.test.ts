@@ -1,6 +1,7 @@
+import { validateInventory } from "./validation";
 import { expect, it } from "vitest";
 import { fillStep, previewFill, repairedRow } from "./repair";
-import { suggestMapping, validateRequired } from "./inventory";
+import { suggestMapping } from "./inventory";
 import type { Source } from "./csv";
 const source: Source = {
   headers: [
@@ -44,8 +45,8 @@ it("previews exact empty and absent changes; applies deterministically without t
   });
   expect(view(source.rows[1]!)).toBe(source.rows[1]);
   expect(
-    await validateRequired(source, mapping, () => false, view),
-  ).toMatchObject({ total: 3, valid: 2, rejected: 1 });
+    await validateInventory(source, mapping, () => false, view),
+  ).toMatchObject({ total: 3, valid: 0, rejected: 3 });
   expect(await previewFill(source, [step], step, () => false)).toMatchObject({
     affected: 0,
   });

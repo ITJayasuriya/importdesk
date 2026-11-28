@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { MissingValueRepair } from "../features/review/MissingValueRepair";
 import type { RepairPreview } from "../domain/repair";
 import { InventoryMapping } from "../features/import/InventoryMapping";
-import type { RequiredResult, Mapping } from "../domain/inventory";
+import type { Mapping } from "../domain/inventory";
+import type { InventoryResult } from "../domain/validation";
 import sample from "../../fixtures/inventory.csv?raw";
 import type { ImportOptions, SourceRow } from "../domain/csv";
 import {
@@ -38,7 +39,7 @@ export function ImportWorkbench() {
     rows: SourceRow[];
     page: number;
   } | null>(null);
-  const [validation, setValidation] = useState<RequiredResult | null>(null);
+  const [validation, setValidation] = useState<InventoryResult | null>(null);
   const importingName = useRef("");
   const [mapping, setMapping] = useState<Mapping | null>(null);
   const [preview, setPreview] = useState<{
@@ -91,14 +92,14 @@ export function ImportWorkbench() {
         setValidation(reply.result);
         setStepCount(reply.stepCount);
         setStatus(
-          `Repair applied. ${reply.result.rejected} rows still need required values. Original unchanged.`,
+          `Repair applied. ${reply.result.rejected} rows still need attention. Original unchanged.`,
         );
         return;
       }
       if (reply.type === "validated") {
         setValidation(reply.result);
         setStatus(
-          `Required-field check complete: ${reply.result.rejected} rows need attention.`,
+          `Inventory check complete: ${reply.result.rejected} rows need attention.`,
         );
         return;
       }
@@ -411,11 +412,11 @@ export function ImportWorkbench() {
           onValidate={(mapping: Mapping) => {
             setMapping(mapping);
             setValidation(null);
-            setStatus("Checking required fields…");
+            setStatus("Checking inventory values…");
             send({
               ...source.identity,
               requestId: crypto.randomUUID(),
-              type: "VALIDATE_REQUIRED",
+              type: "VALIDATE_INVENTORY",
               mapping,
             });
           }}

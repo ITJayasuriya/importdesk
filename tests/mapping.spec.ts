@@ -9,7 +9,7 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   await page.getByRole("checkbox", { name: "I confirm the delimiter" }).check();
   await page.getByRole("button", { name: "Import source preview" }).click();
   await expect(page.getByRole("status")).toContainText("5 source rows ready");
-  const check = page.getByRole("button", { name: "Check required fields" });
+  const check = page.getByRole("button", { name: "Check inventory values" });
   await expect(check).toBeDisabled();
   await expect(
     page.getByRole("combobox", { name: "Asset ID", exact: true }),
@@ -30,10 +30,10 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   await page.context().setOffline(true);
   await check.focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("status")).toContainText("1 rows need attention");
+  await expect(page.getByRole("status")).toContainText("4 rows need attention");
   await expect(
     page.getByText(
-      "5 source rows = 4 with required values + 1 needing attention.",
+      "5 source rows = 1 passing inventory rules + 4 needing attention.",
       { exact: false },
     ),
   ).toBeVisible();
@@ -42,9 +42,11 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
   ).toBeVisible();
   await expect(
     page.getByRole("cell", { name: "000123", exact: true }),
-  ).toHaveCount(2);
+  ).toHaveCount(4);
   await expect(
-    page.getByRole("cell", { name: "01/02/2026", exact: true }),
+    page
+      .locator('[aria-label="Scrollable source table"]')
+      .getByRole("cell", { name: "01/02/2026", exact: true }),
   ).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({
@@ -66,7 +68,7 @@ test("inventory mapping is confirmed, invalidated on edit and checks original va
     .getByRole("combobox", { name: "Label", exact: true })
     .selectOption("2");
   await expect(
-    page.getByRole("heading", { name: "Required-field results" }),
+    page.getByRole("heading", { name: "Inventory validation results" }),
   ).toHaveCount(0);
   await expect(check).toBeDisabled();
 });
@@ -98,6 +100,48 @@ test("duplicate headers require a deliberate positional choice; extra columns ar
     "extra (#8)",
   );
   await page.getByRole("checkbox", { name: "I confirm all inventory" }).check();
-  await page.getByRole("button", { name: "Check required fields" }).click();
-  await expect(page.getByRole("status")).toContainText("0 rows need attention");
+  await page.getByRole("button", { name: "Check inventory values" }).click();
+  await expect(page.getByRole("status")).toContainText("1 rows need attention");
+});
+
+test("inventory validation reports every duplicate member, invalid dates and integer syntax without changing source", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByLabel("Choose CSV").setInputFiles({
+    name: "rules.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(
+      "asset_id,label,category,location,inspection_date,quantity\n0001,A,x,Hall,2026-02-30,1.5\n0001,B,x,Hall,2024-02-29,1\n1,C,x,Hall,2026-02-01,-2",
+    ),
+  });
+  await page.getByRole("checkbox", { name: "I confirm the delimiter" }).check();
+  await page.getByRole("button", { name: "Import source preview" }).click();
+  await page.getByRole("checkbox", { name: "I confirm all inventory" }).check();
+  await page.context().setOffline(true);
+  await page.getByRole("button", { name: "Check inventory values" }).click();
+  await expect(page.getByRole("status")).toContainText("2 rows need attention");
+  const issues = page.locator('[aria-label="Inventory issue examples"]');
+  await expect(
+    issues.getByRole("cell", { name: "DUPLICATE_ID", exact: true }),
+  ).toHaveCount(2);
+  await expect(
+    issues.getByRole("cell", { name: "DATE_INVALID", exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    issues.getByRole("cell", { name: "INTEGER_FORMAT", exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    page.getByText(
+      "3 source rows = 1 passing inventory rules + 2 needing attention.",
+      { exact: false },
+    ),
+  ).toBeVisible();
+  const original = page.locator('[aria-label="Scrollable source table"]');
+  await expect(
+    original.getByRole("cell", { name: "0001", exact: true }),
+  ).toHaveCount(2);
+  await expect(
+    original.getByRole("cell", { name: "1.5", exact: true }),
+  ).toBeVisible();
 });

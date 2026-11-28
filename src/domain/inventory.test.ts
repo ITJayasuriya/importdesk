@@ -1,9 +1,9 @@
+import { validateInventory } from "./validation";
 import { expect, it } from "vitest";
 import {
   mappingProblems,
   requiredIssues,
   suggestMapping,
-  validateRequired,
   INVENTORY_FIELDS,
 } from "./inventory";
 const headers = INVENTORY_FIELDS.map(({ id }) => id);
@@ -29,7 +29,7 @@ it("distinguishes missing and whitespace-only cells without altering source or c
     {
       rowId: "row:1",
       sourceLine: 2,
-      cells: ["000123", " Chair ", "equipment", "Hall", "01/02/2026", "0"],
+      cells: ["000123", " Chair ", "equipment", "Hall", "2026-02-01", "0"],
     },
     {
       rowId: "row:2",
@@ -44,7 +44,7 @@ it("distinguishes missing and whitespace-only cells without altering source or c
     "REQUIRED_MISSING",
   ]);
   expect(
-    await validateRequired({ headers, rows }, mapping, () => false),
+    await validateInventory({ headers, rows }, mapping, () => false),
   ).toMatchObject({
     total: 2,
     valid: 1,
@@ -63,7 +63,7 @@ it("bounds examples while counting every issue and supports cancellation", async
       cells: [],
     })),
   };
-  const result = await validateRequired(source, mapping, () => false);
+  const result = await validateInventory(source, mapping, () => false);
   expect(result).toMatchObject({
     total: 1001,
     rejected: 1001,
@@ -71,8 +71,8 @@ it("bounds examples while counting every issue and supports cancellation", async
     issueCount: 6006,
   });
   expect(result?.examples).toHaveLength(50);
-  expect(await validateRequired(source, mapping, () => true)).toBeNull();
+  expect(await validateInventory(source, mapping, () => true)).toBeNull();
   await expect(
-    validateRequired(source, { ...mapping, label: null }, () => false),
+    validateInventory(source, { ...mapping, label: null }, () => false),
   ).rejects.toThrow("choose");
 });

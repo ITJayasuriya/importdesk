@@ -4,7 +4,7 @@ import {
   requiredIssues,
   type Mapping,
   type RequiredIssue,
-  type RequiredResult,
+  type InventoryField,
 } from "./inventory";
 
 export type InventoryIssue = Omit<RequiredIssue, "code"> & {
@@ -15,7 +15,12 @@ export type InventoryIssue = Omit<RequiredIssue, "code"> & {
     | "INTEGER_FORMAT"
     | "DUPLICATE_ID";
 };
-export type InventoryResult = Omit<RequiredResult, "examples"> & {
+export type InventoryResult = {
+  total: number;
+  valid: number;
+  rejected: number;
+  issueCount: number;
+  byField: Record<InventoryField, number>;
   examples: InventoryIssue[];
 };
 

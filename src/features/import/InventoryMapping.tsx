@@ -1,17 +1,17 @@
+import type { InventoryResult } from "../../domain/validation";
 import { useState } from "react";
 import {
   INVENTORY_FIELDS,
   mappingProblems,
   suggestMapping,
   type Mapping,
-  type RequiredResult,
 } from "../../domain/inventory";
 import styles from "../../app/workbench.module.css";
 
 type Props = {
   headers: string[];
   busy: boolean;
-  result: RequiredResult | null;
+  result: InventoryResult | null;
   onChange: () => void;
   onValidate: (mapping: Mapping) => void;
 };
@@ -104,22 +104,24 @@ export function InventoryMapping({
             type="submit"
             disabled={!confirmed || problems.length > 0}
           >
-            Check required fields
+            Check inventory values
           </button>
         </fieldset>
       </form>
       {result && (
         <section aria-labelledby="required-heading">
-          <h3 id="required-heading">Required-field results</h3>
+          <h3 id="required-heading">Inventory validation results</h3>
           <p>
-            {result.total} source rows = {result.valid} with required values +{" "}
-            {result.rejected} needing attention. {result.issueCount}{" "}
-            required-field issues.
+            {result.total} source rows = {result.valid} passing inventory rules
+            + {result.rejected} needing attention. {result.issueCount} inventory
+            issues.
           </p>
           <p>
-            This check covers presence only. Dates, integers, enums, uniqueness
-            and export safety still need validation before a clean export can be
-            claimed.
+            Dates must be real YYYY-MM-DD calendar dates. Other formats need an
+            explicit conversion; no date is guessed. Quantities must be integer
+            strings. Every row sharing an exact Asset ID is flagged; no row is
+            removed. Category and location accept any non-empty string. Export
+            safety is checked separately before export is available.
           </p>
           <p>
             Whitespace-only cells count as empty. Results include applied
@@ -129,13 +131,11 @@ export function InventoryMapping({
             <div
               className={styles.tableScroll}
               role="region"
-              aria-label="Required-field issue examples"
+              aria-label="Inventory issue examples"
               tabIndex={0}
             >
               <table>
-                <caption>
-                  Required-field issue examples · current values
-                </caption>
+                <caption>Inventory issue examples · current values</caption>
                 <thead>
                   <tr>
                     <th scope="col">Source line</th>

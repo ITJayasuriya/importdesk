@@ -15,8 +15,8 @@ test("keyboard repair previews exact values offline and retains originals across
   await page.getByRole("button", { name: "Import source preview" }).click();
   await expect(page.getByRole("status")).toContainText("5 source rows ready");
   await page.getByRole("checkbox", { name: "I confirm all inventory" }).check();
-  await page.getByRole("button", { name: "Check required fields" }).click();
-  await expect(page.getByRole("status")).toContainText("1 rows need attention");
+  await page.getByRole("button", { name: "Check inventory values" }).click();
+  await expect(page.getByRole("status")).toContainText("4 rows need attention");
   await page.context().setOffline(true);
   await page
     .getByRole("textbox", { name: "Replacement value", exact: true })
@@ -43,7 +43,7 @@ test("keyboard repair previews exact values offline and retains originals across
   await apply.focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("status")).toContainText(
-    "Repair applied. 0 rows",
+    "Repair applied. 3 rows",
   );
   await expect(
     page.getByRole("heading", { name: "4. Fill missing values" }),
