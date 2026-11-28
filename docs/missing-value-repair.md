@@ -5,13 +5,13 @@ This slice fills one mapped column after an explicit before/after preview. It is
 ## Try the sample
 
 1. Import the synthetic inventory and confirm its six destination mappings.
-2. Check required fields: five source rows, four with required values, one empty label.
+2. Choose **Check inventory values**: five source rows, one passing and four needing attention (two duplicate-ID rows, one ambiguous date and one empty label).
 3. In **Fill missing values**, leave **Destination field** as Label and enter `Spare stool`.
 4. Choose **Preview replacement**. Inspect source line 5: `(empty)` → `Spare stool`; one affected cell. Editing either parameter removes the preview and requires a new preview.
-5. Choose **Apply 1 replacements**. Focus moves to the repair heading. Presence results now show five rows with required values and no required-field issues. The source preview still contains the original empty label.
+5. Choose **Apply 1 replacements**. Focus moves to the repair heading. Inventory results now show two passing rows and three needing attention: the two duplicate-ID rows and ambiguous date. The source preview still contains the original empty label.
 6. Preview the same replacement again: zero affected cells; Apply is disabled. Refresh clears the session and all repairs.
 
-The sample's duplicate ID, ambiguous date and formula-like label remain unresolved. Zero presence issues does not mean valid inventory or spreadsheet-safe output. Full validation and safe export remain required M1 follow-up work.
+The sample's duplicate ID, ambiguous date and formula-like label remain unresolved. The validation result is not a spreadsheet-safety guarantee. Explicit date conversion, duplicate resolution and safe export remain follow-up work.
 
 ## Data and concurrency
 
@@ -19,9 +19,9 @@ The sample's duplicate ID, ambiguous date and formula-like label remain unresolv
 - Original arrays, stable row IDs and physical source lines never change. Short records retain absent intermediate columns. Each current row is derived by ordered fill steps; no second complete dataset is stored or sent to React.
 - The worker checks mapping and a 64 KiB UTF-8 replacement limit. This alpha caps in-memory steps at 100. UI only receives counts and at most 50 exact examples.
 - `PREVIEW_FILL` returns a request-bound preview. `COMMIT_FILL` consumes that preview ID once at the same session/revision. Any intervening worker command invalidates it. Stale revisions, zero-change previews and unmatched preview IDs cannot commit.
-- Apply recomputes required-field counts against candidate steps, yielding every 500 rows. Cancellation or replacement before completion cannot publish a mutation. Only successful completion installs the steps and increments the source revision together.
-- `GET_ROWS` always returns original rows. Required-field validation includes applied steps. Mapping edits clear UI results and require confirmation/revalidation; prior fills remain attached to their original source positions.
-- Undo/redo, public versioned recipes, manual edits, destination type validation, export and persistence are unfinished. Internal `FillStep` is not a recipe interchange format.
+- Apply recomputes all inventory rule counts against candidate steps, yielding every 500 rows. Cancellation or replacement before completion cannot publish a mutation. Only successful completion installs the steps and increments the source revision together.
+- `GET_ROWS` always returns original rows. Inventory validation includes applied steps, including global unique-ID checks. Mapping edits clear UI results and require confirmation/revalidation; prior fills remain attached to their original source positions.
+- Undo/redo, public versioned recipes, manual edits, configurable schemas, export and persistence are unfinished. Internal `FillStep` is not a recipe interchange format.
 
 ## Verification
 
