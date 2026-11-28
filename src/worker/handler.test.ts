@@ -73,7 +73,7 @@ it("validates required fields without replacing source and rejects invalid/stale
   const handle = createHandler((reply) => replies.push(reply));
   await handle(
     request(
-      "asset_id,label,category,location,inspection_date,quantity\n0001,,x,Hall,01/02/2026,0",
+      "asset_id,label,category,location,inspection_date,quantity\n0001,,x,Hall,2026-02-01,0",
     ),
   );
   const mapping = {
@@ -84,7 +84,7 @@ it("validates required fields without replacing source and rejects invalid/stale
     inspection_date: 4,
     quantity: 5,
   };
-  await handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  await handle({ ...identity, type: "VALIDATE_INVENTORY", mapping });
   expect(replies.at(-1)).toMatchObject({
     type: "validated",
     result: {
@@ -96,21 +96,21 @@ it("validates required fields without replacing source and rejects invalid/stale
   });
   await handle({
     ...identity,
-    type: "VALIDATE_REQUIRED",
+    type: "VALIDATE_INVENTORY",
     mapping: { ...mapping, label: 0 },
   });
   expect(replies.at(-1)).toMatchObject({ type: "error" });
   await handle({
     ...identity,
     revision: 1,
-    type: "VALIDATE_REQUIRED",
+    type: "VALIDATE_INVENTORY",
     mapping,
   });
   expect(replies.at(-1)).toMatchObject({ type: "error" });
   await handle({ ...identity, type: "GET_ROWS", page: 0 });
   expect(replies.at(-1)).toMatchObject({
     type: "page",
-    rows: [{ cells: ["0001", "", "x", "Hall", "01/02/2026", "0"] }],
+    rows: [{ cells: ["0001", "", "x", "Hall", "2026-02-01", "0"] }],
   });
 });
 it("cancelled or replaced validation cannot publish stale counts", async () => {
@@ -126,11 +126,11 @@ it("cancelled or replaced validation cannot publish stale counts", async () => {
     inspection_date: 4,
     quantity: 5,
   };
-  let pending = handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  let pending = handle({ ...identity, type: "VALIDATE_INVENTORY", mapping });
   await handle({ ...identity, type: "CANCEL" });
   await pending;
   expect(replies.some((reply) => reply.type === "validated")).toBe(false);
-  pending = handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  pending = handle({ ...identity, type: "VALIDATE_INVENTORY", mapping });
   await handle({
     ...request(header + "2,y,y,y,y,2"),
     sessionId: "replacement",
@@ -144,7 +144,7 @@ it("requires a live preview, commits atomically once and rejects obsolete revisi
   const handle = createHandler((reply) => replies.push(reply));
   await handle(
     request(
-      "asset_id,label,category,location,inspection_date,quantity\n0001,,x,Hall,01/02/2026,0",
+      "asset_id,label,category,location,inspection_date,quantity\n0001,,x,Hall,2026-02-01,0",
     ),
   );
   const mapping = {
@@ -187,7 +187,7 @@ it("requires a live preview, commits atomically once and rejects obsolete revisi
   await handle({ ...identity, revision: 1, type: "GET_ROWS", page: 0 });
   expect(replies.at(-1)).toMatchObject({
     type: "page",
-    rows: [{ cells: ["0001", "", "x", "Hall", "01/02/2026", "0"] }],
+    rows: [{ cells: ["0001", "", "x", "Hall", "2026-02-01", "0"] }],
   });
   await handle({ ...preview, revision: 1 });
   expect(replies.at(-1)).toMatchObject({
@@ -232,9 +232,58 @@ it("cancelled previews/commits cannot mutate the repair revision", async () => {
   await handle({ ...identity, type: "CANCEL" });
   await pending;
   expect(replies.some((r) => r.type === "fill_committed")).toBe(false);
-  await handle({ ...identity, type: "VALIDATE_REQUIRED", mapping });
+  await handle({ ...identity, type: "VALIDATE_INVENTORY", mapping });
   expect(replies.at(-1)).toMatchObject({
     type: "validated",
     result: { rejected: 1001 },
   });
+});
+
+it("revalidates global uniqueness after a missing-ID repair without mutating originals", async () => {
+  const replies: Reply[] = [];
+  const handle = createHandler((reply) => replies.push(reply));
+  await handle(
+    request(
+      "asset_id,label,category,location,inspection_date,quantity\n0001,A,x,x,2026-02-01,1\n,B,x,x,2026-02-01,1",
+    ),
+  );
+  const mapping = {
+    asset_id: 0,
+    label: 1,
+    category: 2,
+    location: 3,
+    inspection_date: 4,
+    quantity: 5,
+  };
+  await handle({
+    ...identity,
+    requestId: "preview",
+    type: "PREVIEW_FILL",
+    mapping,
+    field: "asset_id",
+    value: "0001",
+  });
+  await handle({
+    ...identity,
+    requestId: "commit",
+    type: "COMMIT_FILL",
+    previewId: "preview",
+  });
+  expect(replies.at(-1)).toMatchObject({
+    type: "fill_committed",
+    newRevision: 1,
+    result: {
+      total: 2,
+      valid: 0,
+      rejected: 2,
+      issueCount: 2,
+      examples: [
+        { rowId: "row:1", code: "DUPLICATE_ID" },
+        { rowId: "row:2", code: "DUPLICATE_ID" },
+      ],
+    },
+  });
+  await handle({ ...identity, revision: 1, type: "GET_ROWS", page: 0 });
+  const last = replies.at(-1);
+  expect(last?.type === "page" && last.rows[1]?.cells[0]).toBe("");
 });

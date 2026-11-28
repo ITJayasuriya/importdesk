@@ -30,7 +30,7 @@ export const requestSchema = z.discriminatedUnion("type", [
     type: z.literal("GET_ROWS"),
     page: z.number().int().min(0).max(1999),
   }),
-  z.object({ ...identity, type: z.literal("VALIDATE_REQUIRED"), mapping }),
+  z.object({ ...identity, type: z.literal("VALIDATE_INVENTORY"), mapping }),
   z.object({
     ...identity,
     type: z.literal("PREVIEW_FILL"),
