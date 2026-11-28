@@ -1,23 +1,16 @@
 {
   "schema_version": 1,
-  "local_date": "2026-11-27",
+  "local_date": "2026-11-28",
   "state": "in_progress",
-  "planned_daily_goal": "Previewed, revision-safe missing-value repair with immutable originals",
-  "commit_target": 3,
+  "planned_daily_goal": "Strict inventory date/integer validation and all-member duplicate ID detection",
+  "commit_target": 2,
   "completed_unit_ids": [
-    "pure-fill-contract",
-    "worker-preview-commit",
-    "accessible-fill-ui"
+    "pure-inventory-validation"
   ],
-  "actual_commit_shas": [
-    "2eb81846a54cfc8e7ea298929ede0b6c331409bf",
-    "98b9fe179ee2652d2df894eacfeee5fe61504cd1",
-    "444280330025cc3334501edaa15e9d00473b9568",
-    "52f88889a70c4aa8c94cbf1c5f3a127556e5f814"
-  ],
-  "branch": "feat/missing-value-repair",
-  "open_pr": "https://github.com/ITJayasuriya/importdesk/pull/15",
-  "last_tested_sha": "52f88889a70c4aa8c94cbf1c5f3a127556e5f814",
+  "actual_commit_shas": [],
+  "branch": "feat/inventory-validation",
+  "open_pr": null,
+  "last_tested_sha": "df2599d7d100d62d2fb3eafcf616d038d621e7d6",
   "actual_test_results": {
     "check": "passed",
     "unit": "26/26 passed",
@@ -25,14 +18,21 @@
     "local_browsers": "12/12 Chromium/WebKit passed; offline, axe, keyboard/focus, console errors, desktop/360px screenshots inspected",
     "live_before_change": "07cf1b07e823 sample mapping verified",
     "ci_initial": "Failed46030537158:17/18 browsers; Firefox axe page crash after product assertions",
-    "ci_second": "46030932027 failed17/18; textbox-only change insufficient"
+    "ci_second": "46030932027 failed17/18; textbox-only change insufficient",
+    "ci": "Required Linux quality green at983e998;26units/18browsers all3engines; https://github.com/ITJayasuriya/importdesk/actions/runs/46031380099",
+    "merged_revision": "df2599d7d100d62d2fb3eafcf616d038d621e7d6",
+    "postmerge_build": "passed73.77kB gzip JS119.62kB raw worker",
+    "deployment": "One deployment https://a34ce99b.isuru-importdesk.pages.dev, live alias df2599d7d100 verified",
+    "live_smoke": "Offline preview/apply;5 rows/0 required-rejected after fill;original IDs/date intact;desktop/360px screenshots inspected;zero errors;4same-origin GETs/no bodies;localStorage0/IndexedDB0",
+    "daily_commits": "5 substantive commits against target3 including2necessary test fixes; squash integration not double-counted",
+    "ci_main": "Passed https://github.com/ITJayasuriya/importdesk/actions/runs/46031741754 at df2599d"
   },
-  "next_action": "Retest container attribute selectors to avoid named-region ARIA reflection in pinned Firefox; require all CI checks before merge",
+  "next_action": "Integrate validation into revision-safe worker and existing mapping/results UI; run browser regression",
   "dirty_files": [
     "docs/STATUS.md",
     "docs/OPERATIONS.md",
     "docs/RUN-STATE.json"
   ],
-  "blocker": "PR15 initial CI17/18 browsers; Firefox crashed inside axe after repair assertions",
-  "updated_at": "2026-11-27T16:10:32.308816+00:00"
+  "blocker": null,
+  "updated_at": "2026-11-28T09:43:11.690168+00:00"
 }
